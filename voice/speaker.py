@@ -1,66 +1,173 @@
 import os
-import base64
 import winsound
+import soundfile as sf
 
-from dotenv import load_dotenv
-from sarvamai import SarvamAI
+from kokoro_onnx import Kokoro
 
 
-# Load variables from .env
-load_dotenv()
-
+# ==========================================
+# JARVIS KOKORO SPEAKER
+# ==========================================
 
 class Speaker:
+
     def __init__(self):
 
-        api_key = os.getenv("SARVAM_API_KEY")
+        # ==========================================
+        # JARVIS ROOT DIRECTORY
+        # ==========================================
 
-        if not api_key:
-            raise ValueError(
-                "SARVAM_API_KEY not found. "
-                "Please check your .env file."
+        base_dir = os.path.dirname(
+            os.path.dirname(
+                os.path.abspath(__file__)
             )
-
-        self.client = SarvamAI(
-            api_subscription_key=api_key
         )
 
-        self.output_file = "jarvis_voice.wav"
+        # ==========================================
+        # KOKORO CONFIGURATION
+        # ==========================================
+
+        self.model_path = os.path.join(
+            base_dir,
+            "kokoro-v1.0.onnx"
+        )
+
+        self.voices_path = os.path.join(
+            base_dir,
+            "voices-v1.0.bin"
+        )
+
+        # Final selected JARVIS voice
+        self.voice = "am_adam"
+
+        # English voice
+        self.language = "en-us"
+
+        # Normal speaking speed
+        self.speed = 1.0
+
+        # ==========================================
+        # OUTPUT AUDIO
+        # ==========================================
+
+        data_dir = os.path.join(
+            base_dir,
+            "data"
+        )
+
+        os.makedirs(
+            data_dir,
+            exist_ok=True
+        )
+
+        self.output_file = os.path.join(
+            data_dir,
+            "jarvis_voice.wav"
+        )
+
+        # ==========================================
+        # VERIFY MODEL FILES
+        # ==========================================
+
+        if not os.path.exists(self.model_path):
+
+            raise FileNotFoundError(
+                f"Kokoro model not found:\n"
+                f"{self.model_path}"
+            )
+
+        if not os.path.exists(self.voices_path):
+
+            raise FileNotFoundError(
+                f"Kokoro voice file not found:\n"
+                f"{self.voices_path}"
+            )
+
+        # ==========================================
+        # INITIALIZE KOKORO
+        # ==========================================
+
+        print(
+            "Initializing JARVIS voice..."
+        )
+
+        self.kokoro = Kokoro(
+            self.model_path,
+            self.voices_path
+        )
+
+        print(
+            "JARVIS voice initialized: "
+            "Kokoro / am_adam"
+        )
+
+
+    # ==========================================
+    # MAIN SPEAK FUNCTION
+    # ==========================================
 
     def speak(self, text):
 
-        print("JARVIS:", text)
+        if not text:
+            return
+
+        text = str(text).strip()
+
+        if not text:
+            return
+
+        # ==========================================
+        # DISPLAY RESPONSE
+        # ==========================================
+
+        print(
+            "JARVIS:",
+            text
+        )
+
+        # ==========================================
+        # GENERATE + PLAY KOKORO VOICE
+        # ==========================================
 
         try:
 
-            response = self.client.text_to_speech.convert(
-                text=text,
-                language_code="en-IN",
-                speaker="kabir",
-                model="bulbul:v3",
-                pace=1.2,
-                output_audio_codec="wav"
+            samples, sample_rate = self.kokoro.create(
+
+                text,
+
+                voice=self.voice,
+
+                speed=self.speed,
+
+                lang=self.language
             )
 
-            audio_data = base64.b64decode(
-                response.audios[0]
-            )
+            # ==========================================
+            # SAVE WAV
+            # ==========================================
 
-            with open(
+            sf.write(
                 self.output_file,
-                "wb"
-            ) as audio_file:
+                samples,
+                sample_rate
+            )
 
-                audio_file.write(audio_data)
+            # ==========================================
+            # PLAY WAV
+            # ==========================================
 
             winsound.PlaySound(
                 self.output_file,
                 winsound.SND_FILENAME
             )
 
+            print(
+                "Voice engine: Kokoro / am_adam"
+            )
+
         except Exception as e:
 
             print(
-                "JARVIS voice error:",
+                "Kokoro TTS error:",
                 e
             )

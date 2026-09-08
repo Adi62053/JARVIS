@@ -1,3 +1,4 @@
+import re
 import speech_recognition as sr
 
 from voice.listener import Listener
@@ -20,8 +21,12 @@ router = CommandRouter()
 security = CommandSecurity()
 
 
+# ==========================================
+# STARTUP
+# ==========================================
+
 print("==========================================")
-print("          JARVIS V3")
+print("             JARVIS V4")
 print("==========================================")
 print("Say 'Hey Jarvis' to activate.")
 print("Say 'goodbye' or 'talk to you later' to end a conversation.")
@@ -35,23 +40,42 @@ print()
 # ==========================================
 
 def is_tool_command(command):
-    """
-    Determines whether a command should be handled
-    by JARVIS tools instead of the AI.
 
-    V3 currently supports:
-    - Opening applications
-    - Closing applications
-    - Opening Windows utilities
-    - Volume control
-    - Mute / unmute
-    - Lock computer
-    - Window management
-    """
+    command = command.lower().strip()
 
-    # --------------------------------------
-    # APP CONTROL
-    # --------------------------------------
+    # ======================================
+    # FILESYSTEM2 COMMANDS
+    #
+    # IMPORTANT:
+    # These must be checked before the normal
+    # filesystem commands.
+    #
+    # V4 Filesystem2:
+    # - Rename
+    # - Delete
+    # - Copy
+    # - Move
+    # ======================================
+
+    if router._is_filesystem2_command(command):
+
+        return True
+
+    # ======================================
+    # EXISTING FILESYSTEM COMMANDS
+    #
+    # IMPORTANT:
+    # Let CommandRouter be the single source
+    # of truth for filesystem commands.
+    # ======================================
+
+    if router._is_filesystem_command(command):
+
+        return True
+
+    # ======================================
+    # APP COMMANDS
+    # ======================================
 
     if (
         command.startswith("open ")
@@ -61,13 +85,16 @@ def is_tool_command(command):
         or command.startswith("terminate ")
         or command.startswith("kill ")
     ):
+
         return True
 
-    # --------------------------------------
-    # DIRECT VOLUME COMMANDS
-    # --------------------------------------
+    # ======================================
+    # VOLUME COMMANDS
+    # ======================================
 
     volume_commands = [
+
+        # Volume up
         "volume up",
         "volume increase",
         "volume increased",
@@ -78,6 +105,7 @@ def is_tool_command(command):
         "make it louder",
         "louder",
 
+        # Volume down
         "volume down",
         "volume decrease",
         "volume decreased",
@@ -88,23 +116,27 @@ def is_tool_command(command):
         "make it quieter",
         "quieter",
 
+        # Mute
         "mute",
         "mute volume",
         "mute the volume",
 
+        # Unmute
         "unmute",
         "unmute volume",
-        "unmute the volume"
+        "unmute the volume",
     ]
 
     if command in volume_commands:
+
         return True
 
     # --------------------------------------
-    # EXACT / TARGET VOLUME COMMANDS
+    # Volume prefixes
     # --------------------------------------
 
     volume_prefixes = [
+
         "set volume",
         "set the volume",
 
@@ -130,38 +162,89 @@ def is_tool_command(command):
         "turn the volume to",
 
         "make volume",
-        "make the volume"
+        "make the volume",
+
+        # Natural language
+        "set it to",
+        "set it at",
+        "put it at",
+        "put volume at",
+        "change volume to",
+        "change the volume to",
+        "change it to",
+        "make it",
     ]
 
     for prefix in volume_prefixes:
 
         if command.startswith(prefix):
-            return True
 
-    # --------------------------------------
-    # LOCK COMPUTER
-    # --------------------------------------
+            # ----------------------------------
+            # Prevent "make it louder" from
+            # being treated as percentage
+            # ----------------------------------
+
+            if command in [
+                "make it louder",
+                "make it quieter",
+            ]:
+
+                continue
+
+            # ----------------------------------
+            # Only treat as volume command if
+            # a number follows the prefix
+            # ----------------------------------
+
+            remaining = command[
+                len(prefix):
+            ].strip()
+
+            if remaining:
+
+                match = re.match(
+                    r"^(\d{1,3})%?$",
+                    remaining
+                )
+
+                if match:
+
+                    value = int(
+                        match.group(1)
+                    )
+
+                    if 0 <= value <= 100:
+
+                        return True
+
+    # ======================================
+    # LOCK COMMANDS
+    # ======================================
 
     lock_commands = [
+
         "lock",
         "lock computer",
         "lock my computer",
         "lock the computer",
         "lock pc",
-        "lock my pc"
+        "lock my pc",
     ]
 
     if command in lock_commands:
+
         return True
 
-    # --------------------------------------
-    # WINDOW CONTROL
-    # --------------------------------------
+    # ======================================
+    # WINDOW COMMANDS
+    # ======================================
 
     window_commands = [
+
         "minimize",
         "minimize window",
         "minimize the window",
+
         "minimise",
         "minimise window",
         "minimise the window",
@@ -169,6 +252,7 @@ def is_tool_command(command):
         "maximize",
         "maximize window",
         "maximize the window",
+
         "maximise",
         "maximise window",
         "maximise the window",
@@ -180,6 +264,7 @@ def is_tool_command(command):
         "show desktop",
         "show the desktop",
         "desktop",
+
         "minimize all windows",
         "minimise all windows",
 
@@ -187,15 +272,16 @@ def is_tool_command(command):
         "switch windows",
         "switch to next window",
         "next window",
-        "change window"
+        "change window",
     ]
 
     if command in window_commands:
+
         return True
 
-    # --------------------------------------
-    # DIRECT PERCENTAGE
-    # --------------------------------------
+    # ======================================
+    # EXACT VOLUME PERCENTAGE
+    # ======================================
 
     if command.endswith("%"):
 
@@ -206,118 +292,126 @@ def is_tool_command(command):
             value = int(percentage)
 
             if 0 <= value <= 100:
+
                 return True
+
+    # ======================================
+    # NO TOOL
+    # ======================================
 
     return False
 
 
 # ==========================================
-# CONFIRMATION DETECTION
+# CONFIRMATION
 # ==========================================
 
 def is_confirmation(command):
-    """
-    Detects positive confirmation responses.
-    """
 
-    confirmation_commands = [
+    command = command.lower().strip()
+
+    return command in [
+
         "yes",
         "yes jarvis",
+
         "confirm",
         "confirmed",
+
         "do it",
         "proceed",
         "go ahead",
         "continue",
+
         "okay",
         "ok",
-        "sure"
+        "sure",
     ]
-
-    return command in confirmation_commands
 
 
 def is_cancellation(command):
-    """
-    Detects negative confirmation responses.
-    """
 
-    cancellation_commands = [
+    command = command.lower().strip()
+
+    return command in [
+
         "no",
         "no jarvis",
+
         "cancel",
         "cancel it",
+
         "don't",
         "do not",
-        "stop",
-        "never mind",
-        "nevermind"
-    ]
 
-    return command in cancellation_commands
+        "stop",
+
+        "never mind",
+        "nevermind",
+    ]
 
 
 # ==========================================
-# ASK FOR CONFIRMATION
+# RISKY COMMAND CONFIRMATION
 # ==========================================
 
 def confirm_risky_command(command):
-    """
-    Asks the user to confirm a risky command.
 
-    Returns:
-        True  -> user confirmed
-        False -> user cancelled or did not confirm
-    """
-
-    # --------------------------------------
-    # LOCK COMPUTER
-    # --------------------------------------
+    command = command.lower().strip()
 
     lock_commands = [
+
         "lock",
         "lock computer",
         "lock my computer",
         "lock the computer",
         "lock pc",
-        "lock my pc"
+        "lock my pc",
     ]
+
+    # ======================================
+    # LOCK CONFIRMATION
+    # ======================================
 
     if command in lock_commands:
 
         speaker.speak(
-            "Sir, locking the computer will lock your "
-            "current Windows session. Should I continue?"
+            "Sir, locking the computer will "
+            "lock your current Windows session. "
+            "Should I continue?"
         )
 
-    # --------------------------------------
-    # CLOSE / TERMINATE / KILL
-    # --------------------------------------
+    # ======================================
+    # OTHER RISKY COMMANDS
+    # ======================================
 
     else:
 
         speaker.speak(
-            "Sir, this action may close an application "
-            "and could affect unsaved work. Should I continue?"
+            "Sir, this action may close an "
+            "application and could affect "
+            "unsaved work. Should I continue?"
         )
-
-    # --------------------------------------
-    # LISTEN FOR CONFIRMATION
-    # --------------------------------------
 
     try:
 
-        confirmation = listener.listen()
-
-        confirmation = confirmation.lower().strip()
+        confirmation = (
+            listener.listen()
+            .lower()
+            .strip()
+        )
 
         # ----------------------------------
         # CONFIRMED
         # ----------------------------------
 
-        if is_confirmation(confirmation):
+        if is_confirmation(
+            confirmation
+        ):
 
-            speaker.speak("Confirmed, sir.")
+            speaker.speak(
+                "Confirmed, sir."
+            )
 
             return True
 
@@ -325,28 +419,38 @@ def confirm_risky_command(command):
         # CANCELLED
         # ----------------------------------
 
-        if is_cancellation(confirmation):
+        if is_cancellation(
+            confirmation
+        ):
 
-            speaker.speak("Cancelled, sir.")
+            speaker.speak(
+                "Cancelled, sir."
+            )
 
             return False
 
         # ----------------------------------
-        # UNKNOWN ANSWER
+        # UNCLEAR
         # ----------------------------------
 
         speaker.speak(
-            "I didn't receive a clear confirmation, sir. "
-            "The action has been cancelled."
+            "I didn't receive a clear "
+            "confirmation, sir. The action "
+            "has been cancelled."
         )
 
         return False
 
+    # ======================================
+    # SPEECH RECOGNITION ERRORS
+    # ======================================
+
     except sr.UnknownValueError:
 
         speaker.speak(
-            "I couldn't understand your confirmation, sir. "
-            "The action has been cancelled."
+            "I couldn't understand your "
+            "confirmation, sir. The action "
+            "has been cancelled."
         )
 
         return False
@@ -354,16 +458,21 @@ def confirm_risky_command(command):
     except sr.RequestError as e:
 
         print(
-            "JARVIS: Speech recognition error during confirmation:",
+            "JARVIS: Speech recognition error "
+            "during confirmation:",
             e
         )
 
         speaker.speak(
-            "Speech recognition is unavailable, sir. "
-            "The action has been cancelled."
+            "Speech recognition is unavailable, "
+            "sir. The action has been cancelled."
         )
 
         return False
+
+    # ======================================
+    # GENERAL ERROR
+    # ======================================
 
     except Exception as e:
 
@@ -373,171 +482,277 @@ def confirm_risky_command(command):
         )
 
         speaker.speak(
-            "Something went wrong during confirmation, sir. "
-            "The action has been cancelled."
+            "Something went wrong during "
+            "confirmation, sir. The action "
+            "has been cancelled."
         )
 
         return False
 
 
 # ==========================================
-# MAIN LOOP
+# HANDLE TOOL RESULT
+# ==========================================
+
+def handle_tool_result(result):
+
+    if not result:
+
+        return
+
+    # ======================================
+    # SPECIAL FILESYSTEM RESULT
+    # ======================================
+
+    if "|||VOICE|||" in result:
+
+        console_output, voice_output = (
+            result.split(
+                "|||VOICE|||",
+                1
+            )
+        )
+
+        # ----------------------------------
+        # Full information -> console
+        # ----------------------------------
+
+        print(
+            "\n" + console_output
+        )
+
+        # ----------------------------------
+        # Short summary -> voice
+        # ----------------------------------
+
+        speaker.speak(
+            voice_output.strip()
+        )
+
+        return
+
+    # ======================================
+    # NORMAL TOOL RESULT
+    # ======================================
+
+    speaker.speak(
+        result
+    )
+
+
+# ==========================================
+# MAIN JARVIS LOOP
 # ==========================================
 
 running = True
+
 
 while running:
 
     try:
 
-        # --------------------------------------
+        # ==================================
         # WAIT FOR WAKE WORD
-        # --------------------------------------
+        # ==================================
 
         wakeword.wait_for_wake_word()
 
-        print("\n>>> HEY JARVIS DETECTED <<<")
+        print(
+            "\n>>> HEY JARVIS DETECTED <<<"
+        )
 
-        speaker.speak("Yes, sir.")
-
-        # --------------------------------------
-        # ACTIVE CONVERSATION
-        # --------------------------------------
+        speaker.speak(
+            "Yes, sir."
+        )
 
         conversation_active = True
+
+        # ==================================
+        # CONVERSATION LOOP
+        # ==================================
 
         while conversation_active:
 
             try:
 
-                # ----------------------------------
-                # LISTEN
-                # ----------------------------------
+                command = (
+                    listener.listen()
+                    .lower()
+                    .strip()
+                )
 
-                command = listener.listen()
+                # ==================================
+                # EMPTY COMMAND
+                # ==================================
 
-                command = command.lower().strip()
+                if not command:
 
-                # ----------------------------------
-                # COMPLETELY SHUT DOWN JARVIS
-                # ----------------------------------
+                    continue
+
+                # ==================================
+                # EXIT JARVIS
+                # ==================================
 
                 if command in [
+
                     "exit",
                     "shut down",
                     "shutdown",
-                    "terminate"
+                    "terminate",
+
                 ]:
 
-                    speaker.speak("Goodbye, sir.")
+                    speaker.speak(
+                        "Goodbye, sir."
+                    )
 
                     running = False
+
                     conversation_active = False
 
                     continue
 
-                # ----------------------------------
-                # END CURRENT CONVERSATION ONLY
-                # ----------------------------------
+                # ==================================
+                # END CURRENT CONVERSATION
+                # ==================================
 
                 elif command in [
+
                     "bye",
                     "goodbye",
-                    "talk to you later"
+                    "talk to you later",
+
                 ]:
 
-                    speaker.speak("Goodbye, sir.")
+                    speaker.speak(
+                        "Goodbye, sir."
+                    )
 
                     conversation_active = False
 
                     continue
 
-                # ----------------------------------
-                # V3 TOOL COMMANDS
-                # ----------------------------------
+                # ==================================
+                # TOOL COMMAND
+                # ==================================
 
-                elif is_tool_command(command):
+                elif is_tool_command(
+                    command
+                ):
 
                     # ----------------------------------
                     # SECURITY CHECK
                     # ----------------------------------
 
-                    security_level = security.check(command)
+                    security_level = (
+                        security.check(
+                            command
+                        )
+                    )
 
                     # ----------------------------------
-                    # BLOCKED COMMAND
+                    # BLOCKED
                     # ----------------------------------
 
-                    if security_level == CommandSecurity.BLOCKED:
+                    if (
+                        security_level
+                        == CommandSecurity.BLOCKED
+                    ):
 
                         speaker.speak(
-                            "I cannot perform that command "
-                            "because it is blocked for safety, sir."
+                            "I cannot perform that "
+                            "command because it is "
+                            "blocked for safety, sir."
                         )
 
                         continue
 
                     # ----------------------------------
-                    # RISKY COMMAND
+                    # RISKY
                     # ----------------------------------
 
-                    if security_level == CommandSecurity.RISKY:
+                    if (
+                        security_level
+                        == CommandSecurity.RISKY
+                    ):
 
-                        confirmed = confirm_risky_command(command)
+                        confirmed = (
+                            confirm_risky_command(
+                                command
+                            )
+                        )
 
                         if not confirmed:
+
                             continue
 
                     # ----------------------------------
                     # EXECUTE TOOL
                     # ----------------------------------
 
-                    result = router.route(command)
+                    result = (
+                        router.route(
+                            command
+                        )
+                    )
 
-                    speaker.speak(result)
+                    # ----------------------------------
+                    # HANDLE RESULT
+                    # ----------------------------------
 
-                # ----------------------------------
-                # JARVIS AI RESPONSE
-                # ----------------------------------
+                    if result:
+
+                        handle_tool_result(
+                            result
+                        )
+
+                # ==================================
+                # AI COMMAND
+                # ==================================
 
                 else:
 
-                    response = jarvis.respond(command)
+                    response = (
+                        jarvis.respond(
+                            command
+                        )
+                    )
 
-                    speaker.speak(response)
+                    speaker.speak(
+                        response
+                    )
 
-            # --------------------------------------
-            # SPEECH NOT UNDERSTOOD
-            # --------------------------------------
+            # ======================================
+            # SPEECH RECOGNITION ERROR
+            # ======================================
 
             except sr.UnknownValueError:
 
                 speaker.speak(
-                    "Sorry, sir. I didn't understand that."
+                    "Sorry, sir. I didn't "
+                    "understand that."
                 )
 
                 continue
-
-            # --------------------------------------
-            # GOOGLE SPEECH ERROR
-            # --------------------------------------
 
             except sr.RequestError as e:
 
                 print(
-                    "JARVIS: Speech recognition error:",
+                    "JARVIS: Speech recognition "
+                    "error:",
                     e
                 )
 
                 speaker.speak(
-                    "Sorry, sir. Speech recognition is currently unavailable."
+                    "Sorry, sir. Speech recognition "
+                    "is currently unavailable."
                 )
 
                 continue
 
-            # --------------------------------------
-            # OTHER CONVERSATION ERRORS
-            # --------------------------------------
+            # ======================================
+            # CONVERSATION ERROR
+            # ======================================
 
             except Exception as e:
 
@@ -552,32 +767,41 @@ while running:
 
                 continue
 
-        # --------------------------------------
-        # RETURN TO WAKE-WORD MODE
-        # --------------------------------------
+        # ==================================
+        # WAIT FOR NEXT WAKE WORD
+        # ==================================
 
         if running:
 
-            print("\nWaiting for 'Hey Jarvis'...")
+            print(
+                "\nWaiting for 'Hey Jarvis'..."
+            )
 
-    # ------------------------------------------
-    # CTRL + C
-    # ------------------------------------------
+    # ==================================
+    # CTRL+C
+    # ==================================
 
     except KeyboardInterrupt:
 
-        print("\n\nShutting down JARVIS.")
+        print(
+            "\n\nShutting down JARVIS."
+        )
 
         try:
-            speaker.speak("Goodbye, sir.")
+
+            speaker.speak(
+                "Goodbye, sir."
+            )
+
         except Exception:
+
             pass
 
         running = False
 
-    # ------------------------------------------
-    # OTHER MAIN ERRORS
-    # ------------------------------------------
+    # ==================================
+    # GENERAL ERROR
+    # ==================================
 
     except Exception as e:
 
@@ -591,5 +815,6 @@ while running:
 # SHUTDOWN
 # ==========================================
 
-print("\nJARVIS has been shut down.")
-
+print(
+    "\nJARVIS has been shut down."
+)
