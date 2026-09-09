@@ -6,33 +6,24 @@ from voice.speaker import Speaker
 from voice.wakeword import WakeWordDetector
 from core.jarvis import Jarvis
 from tools.router import CommandRouter
+from tools.router_web import WebRouter
 from security.command_security import CommandSecurity
 
 
 # ==========================================
-# JARVIS SETUP
+# JARVIS COMPONENTS
 # ==========================================
 
-jarvis = Jarvis()
-listener = Listener()
-speaker = Speaker()
-wakeword = WakeWordDetector()
-router = CommandRouter()
-security = CommandSecurity()
+jarvis = None
+listener = None
+speaker = None
+wakeword = None
+router = None
+security = None
 
-
-# ==========================================
-# STARTUP
-# ==========================================
-
-print("==========================================")
-print("             JARVIS V4")
-print("==========================================")
-print("Say 'Hey Jarvis' to activate.")
-print("Say 'goodbye' or 'talk to you later' to end a conversation.")
-print("Say 'exit' to shut down JARVIS.")
-print("Press Ctrl+C to stop.")
-print()
+# V5 WebRouter can safely be created during import.
+# This allows V5 web testing without starting JARVIS.
+web_router = WebRouter()
 
 
 # ==========================================
@@ -42,6 +33,18 @@ print()
 def is_tool_command(command):
 
     command = command.lower().strip()
+
+    # ======================================
+    # V5 WEB COMMANDS
+    #
+    # IMPORTANT:
+    # Web commands are checked before the
+    # normal V3/V4 router.
+    # ======================================
+
+    if web_router.is_web_command(command):
+
+        return True
 
     # ======================================
     # FILESYSTEM2 COMMANDS
@@ -544,277 +547,347 @@ def handle_tool_result(result):
 # MAIN JARVIS LOOP
 # ==========================================
 
-running = True
+def main():
 
+    global jarvis
+    global listener
+    global speaker
+    global wakeword
+    global router
+    global security
 
-while running:
+    # ======================================
+    # JARVIS SETUP
+    # ======================================
 
-    try:
+    jarvis = Jarvis()
+    listener = Listener()
+    speaker = Speaker()
+    wakeword = WakeWordDetector()
+    router = CommandRouter()
+    security = CommandSecurity()
 
-        # ==================================
-        # WAIT FOR WAKE WORD
-        # ==================================
+    # ======================================
+    # STARTUP
+    # ======================================
 
-        wakeword.wait_for_wake_word()
+    print("==========================================")
+    print("             JARVIS V5")
+    print("==========================================")
+    print("Say 'Hey Jarvis' to activate.")
+    print("Say 'goodbye' or 'talk to you later' to end a conversation.")
+    print("Say 'exit' to shut down JARVIS.")
+    print("Press Ctrl+C to stop.")
+    print()
 
-        print(
-            "\n>>> HEY JARVIS DETECTED <<<"
-        )
+    running = True
 
-        speaker.speak(
-            "Yes, sir."
-        )
+    while running:
 
-        conversation_active = True
+        try:
 
-        # ==================================
-        # CONVERSATION LOOP
-        # ==================================
+            # ==================================
+            # WAIT FOR WAKE WORD
+            # ==================================
 
-        while conversation_active:
+            wakeword.wait_for_wake_word()
 
-            try:
+            print(
+                "\n>>> HEY JARVIS DETECTED <<<"
+            )
 
-                command = (
-                    listener.listen()
-                    .lower()
-                    .strip()
-                )
+            speaker.speak(
+                "Yes, sir."
+            )
 
-                # ==================================
-                # EMPTY COMMAND
-                # ==================================
+            conversation_active = True
 
-                if not command:
+            # ==================================
+            # CONVERSATION LOOP
+            # ==================================
 
-                    continue
+            while conversation_active:
 
-                # ==================================
-                # EXIT JARVIS
-                # ==================================
+                try:
 
-                if command in [
-
-                    "exit",
-                    "shut down",
-                    "shutdown",
-                    "terminate",
-
-                ]:
-
-                    speaker.speak(
-                        "Goodbye, sir."
+                    command = (
+                        listener.listen()
+                        .lower()
+                        .strip()
                     )
 
-                    running = False
+                    # ==================================
+                    # EMPTY COMMAND
+                    # ==================================
 
-                    conversation_active = False
-
-                    continue
-
-                # ==================================
-                # END CURRENT CONVERSATION
-                # ==================================
-
-                elif command in [
-
-                    "bye",
-                    "goodbye",
-                    "talk to you later",
-
-                ]:
-
-                    speaker.speak(
-                        "Goodbye, sir."
-                    )
-
-                    conversation_active = False
-
-                    continue
-
-                # ==================================
-                # TOOL COMMAND
-                # ==================================
-
-                elif is_tool_command(
-                    command
-                ):
-
-                    # ----------------------------------
-                    # SECURITY CHECK
-                    # ----------------------------------
-
-                    security_level = (
-                        security.check(
-                            command
-                        )
-                    )
-
-                    # ----------------------------------
-                    # BLOCKED
-                    # ----------------------------------
-
-                    if (
-                        security_level
-                        == CommandSecurity.BLOCKED
-                    ):
-
-                        speaker.speak(
-                            "I cannot perform that "
-                            "command because it is "
-                            "blocked for safety, sir."
-                        )
+                    if not command:
 
                         continue
 
-                    # ----------------------------------
-                    # RISKY
-                    # ----------------------------------
+                    # ==================================
+                    # EXIT JARVIS
+                    # ==================================
 
-                    if (
-                        security_level
-                        == CommandSecurity.RISKY
+                    if command in [
+
+                        "exit",
+                        "shut down",
+                        "shutdown",
+                        "terminate",
+
+                    ]:
+
+                        speaker.speak(
+                            "Goodbye, sir."
+                        )
+
+                        running = False
+
+                        conversation_active = False
+
+                        continue
+
+                    # ==================================
+                    # END CURRENT CONVERSATION
+                    # ==================================
+
+                    elif command in [
+
+                        "bye",
+                        "goodbye",
+                        "talk to you later",
+
+                    ]:
+
+                        speaker.speak(
+                            "Goodbye, sir."
+                        )
+
+                        conversation_active = False
+
+                        continue
+
+                    # ==================================
+                    # TOOL COMMAND
+                    # ==================================
+
+                    elif is_tool_command(
+                        command
                     ):
 
-                        confirmed = (
-                            confirm_risky_command(
+                        # ----------------------------------
+                        # SECURITY CHECK
+                        # ----------------------------------
+
+                        security_level = (
+                            security.check(
                                 command
                             )
                         )
 
-                        if not confirmed:
+                        # ----------------------------------
+                        # BLOCKED
+                        # ----------------------------------
+
+                        if (
+                            security_level
+                            == CommandSecurity.BLOCKED
+                        ):
+
+                            speaker.speak(
+                                "I cannot perform that "
+                                "command because it is "
+                                "blocked for safety, sir."
+                            )
 
                             continue
 
-                    # ----------------------------------
-                    # EXECUTE TOOL
-                    # ----------------------------------
+                        # ----------------------------------
+                        # RISKY
+                        # ----------------------------------
 
-                    result = (
-                        router.route(
+                        if (
+                            security_level
+                            == CommandSecurity.RISKY
+                        ):
+
+                            confirmed = (
+                                confirm_risky_command(
+                                    command
+                                )
+                            )
+
+                            if not confirmed:
+
+                                continue
+
+                        # ----------------------------------
+                        # EXECUTE V5 WEB COMMAND
+                        # ----------------------------------
+
+                        if web_router.is_web_command(
                             command
+                        ):
+
+                            result = (
+                                web_router.execute(
+                                    command
+                                )
+                            )
+
+                        # ----------------------------------
+                        # EXECUTE EXISTING V3/V4 COMMAND
+                        # ----------------------------------
+
+                        else:
+
+                            result = (
+                                router.route(
+                                    command
+                                )
+                            )
+
+                        # ----------------------------------
+                        # HANDLE RESULT
+                        # ----------------------------------
+
+                        if result:
+
+                            handle_tool_result(
+                                result
+                            )
+
+                    # ==================================
+                    # AI COMMAND
+                    # ==================================
+
+                    else:
+
+                        response = (
+                            jarvis.respond(
+                                command
+                            )
                         )
+
+                        speaker.speak(
+                            response
+                        )
+
+                # ======================================
+                # SPEECH RECOGNITION ERROR
+                # ======================================
+
+                except sr.UnknownValueError:
+
+                    speaker.speak(
+                        "Sorry, sir. I didn't "
+                        "understand that."
                     )
 
-                    # ----------------------------------
-                    # HANDLE RESULT
-                    # ----------------------------------
+                    continue
 
-                    if result:
+                except sr.RequestError as e:
 
-                        handle_tool_result(
-                            result
-                        )
-
-                # ==================================
-                # AI COMMAND
-                # ==================================
-
-                else:
-
-                    response = (
-                        jarvis.respond(
-                            command
-                        )
+                    print(
+                        "JARVIS: Speech recognition "
+                        "error:",
+                        e
                     )
 
                     speaker.speak(
-                        response
+                        "Sorry, sir. Speech recognition "
+                        "is currently unavailable."
                     )
 
-            # ======================================
-            # SPEECH RECOGNITION ERROR
-            # ======================================
+                    continue
 
-            except sr.UnknownValueError:
+                # ======================================
+                # CONVERSATION ERROR
+                # ======================================
 
-                speaker.speak(
-                    "Sorry, sir. I didn't "
-                    "understand that."
-                )
+                except Exception as e:
 
-                continue
+                    print(
+                        "JARVIS conversation error:",
+                        e
+                    )
 
-            except sr.RequestError as e:
+                    speaker.speak(
+                        "Sorry, sir. Something went wrong."
+                    )
 
-                print(
-                    "JARVIS: Speech recognition "
-                    "error:",
-                    e
-                )
+                    continue
 
-                speaker.speak(
-                    "Sorry, sir. Speech recognition "
-                    "is currently unavailable."
-                )
+            # ==================================
+            # WAIT FOR NEXT WAKE WORD
+            # ==================================
 
-                continue
-
-            # ======================================
-            # CONVERSATION ERROR
-            # ======================================
-
-            except Exception as e:
+            if running:
 
                 print(
-                    "JARVIS conversation error:",
-                    e
+                    "\nWaiting for 'Hey Jarvis'..."
                 )
 
-                speaker.speak(
-                    "Sorry, sir. Something went wrong."
-                )
+        # ======================================
+        # CTRL+C
+        # ======================================
 
-                continue
-
-        # ==================================
-        # WAIT FOR NEXT WAKE WORD
-        # ==================================
-
-        if running:
+        except KeyboardInterrupt:
 
             print(
-                "\nWaiting for 'Hey Jarvis'..."
+                "\n\nShutting down JARVIS."
             )
 
-    # ==================================
-    # CTRL+C
-    # ==================================
+            try:
 
-    except KeyboardInterrupt:
+                speaker.speak(
+                    "Goodbye, sir."
+                )
 
-        print(
-            "\n\nShutting down JARVIS."
-        )
+            except Exception:
 
-        try:
+                pass
 
-            speaker.speak(
-                "Goodbye, sir."
+            running = False
+
+        # ======================================
+        # GENERAL ERROR
+        # ======================================
+
+        except Exception as e:
+
+            print(
+                "JARVIS error:",
+                e
             )
 
-        except Exception:
+    # ==========================================
+    # SHUTDOWN
+    # ==========================================
 
-            pass
-
-        running = False
-
-    # ==================================
-    # GENERAL ERROR
-    # ==================================
-
-    except Exception as e:
-
-        print(
-            "JARVIS error:",
-            e
-        )
+    print(
+        "\nJARVIS has been shut down."
+    )
 
 
 # ==========================================
-# SHUTDOWN
+# IMPORTANT
+#
+# JARVIS starts only when this file is
+# executed directly.
+#
+# Importing main.py will NOT start:
+# - Kokoro voice
+# - Wake word
+# - Microphone loop
+# - JARVIS conversation loop
+#
+# This allows V5 WebRouter testing through:
+#
+# from main import web_router
+#
 # ==========================================
 
-print(
-    "\nJARVIS has been shut down."
-)
+if __name__ == "__main__":
+
+    main()
