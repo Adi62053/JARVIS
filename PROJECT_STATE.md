@@ -2,11 +2,11 @@
 
 ## Current Version
 
-**V5 — WEB INTELLIGENCE**
+**V6 — COMPUTER VISION**
 
 ## Current Status
 
-**V5 COMPLETED**
+**V6 COMPLETED AND FROZEN**
 
 JARVIS is now a voice-controlled Windows laptop assistant with:
 
@@ -18,31 +18,39 @@ JARVIS is now a voice-controlled Windows laptop assistant with:
 * Current-information questions
 * Webpage retrieval and text extraction
 * Search-result fallback when webpages block direct access
-* Modular command routing
-* Security-aware command handling
+* Screen capture
+* OCR
+* Structured screen analysis
+* Active-window detection
+* Browser control
+* Vision command routing
 * Local offline Kokoro TTS voice
 
-V5 preserves all working V1, V2, V3 and V4 capabilities and adds controlled web-information capabilities.
+V6 preserves all working V1, V2, V3, V4 and V5 capabilities and adds controlled Computer Vision capabilities.
+
+**V6 final End-to-End validation: 11 PASSED / 0 FAILED.**
+
+**V6 is officially frozen.**
 
 ---
 
 # PROJECT ROADMAP
 
-| Version | Name                 | Primary Outcome                                                                            |
-| ------- | -------------------- | ------------------------------------------------------------------------------------------ |
-| Phase 0 | Foundation           | Project setup, environment, architecture, configuration, logging and development workflow. |
-| V1      | Basic JARVIS         | Voice → AI → Voice conversation.                                                           |
-| V2      | Wake Word            | Hands-free activation and conversation sessions.                                           |
-| V3      | Laptop Control       | Controlled application and Windows operations.                                             |
-| V4      | Files & Folders      | Search, create, inspect, rename, copy, move and delete files/folders.                      |
-| **V5**  | **Web Intelligence** | **Search, retrieve and use online information safely.**                                    |
-| V6      | Computer Vision      | Optional screen/screenshot understanding and visual interaction.                           |
-| V7      | Memory               | Persistent, user-controlled memory and context.                                            |
-| V8      | Personal Automation  | Reusable multi-action workflows.                                                           |
-| V9      | Security System      | Permissions, confirmations, authentication and sensitive-action controls.                  |
-| V10     | Background Mode      | Start with Windows and wait for wake word.                                                 |
-| V11     | JARVIS GUI           | Dedicated visual interface and system dashboard.                                           |
-| V12     | Advanced Agent       | Goal-based planning, tool use, verification and multi-step execution.                      |
+| Version | Name                | Primary Outcome                                                                            |
+| ------- | ------------------- | ------------------------------------------------------------------------------------------ |
+| Phase 0 | Foundation          | Project setup, environment, architecture, configuration, logging and development workflow. |
+| V1      | Basic JARVIS        | Voice → AI → Voice conversation.                                                           |
+| V2      | Wake Word           | Hands-free activation and conversation sessions.                                           |
+| V3      | Laptop Control      | Controlled application and Windows operations.                                             |
+| V4      | Files & Folders     | Search, create, inspect, rename, copy, move and delete files/folders.                      |
+| V5      | Web Intelligence    | Search, retrieve and use online information safely.                                        |
+| **V6**  | **Computer Vision** | **Screen understanding and visual interaction.**                                           |
+| V7      | Memory              | Persistent, user-controlled memory and context.                                            |
+| V8      | Personal Automation | Reusable multi-action workflows.                                                           |
+| V9      | Security System     | Permissions, confirmations, authentication and sensitive-action controls.                  |
+| V10     | Background Mode     | Start with Windows and wait for wake word.                                                 |
+| V11     | JARVIS GUI          | Dedicated visual interface and system dashboard.                                           |
+| V12     | Advanced Agent      | Goal-based planning, tool use, verification and multi-step execution.                      |
 
 ---
 
@@ -530,6 +538,7 @@ New modular files:
 
 ```text
 tools/web_intelligence.py
+
 tools/router_web.py
 ```
 
@@ -617,9 +626,13 @@ Commands such as:
 
 ```text
 search for latest cricket news
+
 search for Python programming
+
 search online for technology news
+
 google latest cricket news
+
 web search Python
 ```
 
@@ -659,6 +672,7 @@ Natural-language questions such as:
 
 ```text
 What is the latest news about Python?
+
 What is the latest news about cricket?
 ```
 
@@ -716,7 +730,9 @@ Commands such as:
 
 ```text
 read the first web page
+
 read the second web page
+
 read the third web page
 ```
 
@@ -726,15 +742,25 @@ Behavior:
 
 ```text
 Search
+
   ↓
+
 Stored Results
+
   ↓
+
 Result Number
+
   ↓
+
 Webpage Fetch
+
   ↓
+
 Content Extraction
+
   ↓
+
 Kokoro Voice
 ```
 
@@ -868,15 +894,498 @@ This ensures that a blocked webpage does not terminate the JARVIS conversation.
 
 ---
 
-# V5 ARCHITECTURE
+# V6 — COMPUTER VISION
+
+## V6 Status
+
+**✓ COMPLETE — FROZEN**
+
+V6 adds the Computer Vision foundation to JARVIS without replacing the existing V1–V5 architecture.
+
+V6 provides:
+
+✓ Screen capture
+
+✓ OCR
+
+✓ Structured screen analysis
+
+✓ Active-window detection
+
+✓ Browser control
+
+✓ Vision command routing
+
+✓ Screen text reading
+
+✓ Visual screen understanding
+
+✓ Browser navigation commands
+
+✓ Voice integration
+
+✓ V6 safety handling
+
+✓ End-to-end validation
+
+---
+
+## V6.1 — Screen Capture
+
+Module:
 
 ```text
-                         JARVIS V5
+tools/vision_capture.py
+```
+
+Responsible for:
+
+✓ Capturing the current screen
+
+✓ Saving screenshots
+
+✓ Creating timestamped screenshot files
+
+✓ Providing captured image paths to the vision pipeline
+
+Screenshot storage:
+
+```text
+data/screenshots/
+```
+
+V6.1 testing passed successfully.
+
+---
+
+## V6.2 — OCR
+
+Module:
+
+```text
+tools/vision_ocr.py
+```
+
+Responsible for:
+
+✓ Loading screenshots
+
+✓ OCR processing
+
+✓ Extracting visible text
+
+✓ Returning OCR text to JARVIS
+
+✓ Handling OCR errors safely
+
+Technology:
+
+✓ pytesseract
+
+✓ PIL/Pillow
+
+✓ Local processing
+
+V6.2 testing passed successfully.
+
+---
+
+## V6.3 — Screen Analyzer
+
+Module:
+
+```text
+tools/vision_analyzer.py
+```
+
+Responsible for:
+
+✓ Structured OCR
+
+✓ Screen element detection
+
+✓ Element coordinates
+
+✓ Element dimensions
+
+✓ OCR confidence
+
+✓ Raw element collection
+
+✓ Clean element filtering
+
+✓ Full-screen text extraction
+
+✓ Screen resolution detection
+
+Element structure includes:
+
+✓ text
+
+✓ x
+
+✓ y
+
+✓ width
+
+✓ height
+
+✓ confidence
+
+V6.3 testing passed successfully.
+
+---
+
+## V6.4 — Active Window Detection
+
+Module:
+
+```text
+tools/window_control_v6.py
+```
+
+Responsible for:
+
+✓ Active-window detection
+
+✓ Window title detection
+
+✓ Process identification
+
+✓ Process ID detection
+
+✓ Process path detection
+
+✓ Window class detection
+
+✓ Visibility detection
+
+✓ Maximized/minimized state
+
+✓ Window geometry
+
+Windows native APIs are used for active-window information.
+
+V6.4 testing passed successfully.
+
+---
+
+## V6.5 — Vision Router
+
+Module:
+
+```text
+tools/vision_router.py
+```
+
+Responsible for:
+
+✓ Connecting screen capture and analysis
+
+✓ Connecting active-window detection
+
+✓ Unified vision results
+
+✓ Current-screen analysis
+
+✓ Storing the latest vision result
+
+Unified result contains:
+
+✓ success
+
+✓ image
+
+✓ screen
+
+✓ active_window
+
+V6.5 testing passed successfully.
+
+---
+
+## V6.6 — Browser Control
+
+Module:
+
+```text
+tools/browser_control_v6.py
+```
+
+Responsible for:
+
+✓ Browser detection
+
+✓ Default-browser fallback
+
+✓ URL validation
+
+✓ URL normalization
+
+✓ Search URL generation
+
+✓ Opening URLs
+
+✓ Browser navigation
+
+✓ New tab
+
+✓ Close current tab
+
+✓ Refresh
+
+✓ Back
+
+✓ Forward
+
+✓ New browser window
+
+✓ Keyboard control
+
+✓ Browser status
+
+Supported browser targets include:
+
+✓ Chrome
+
+✓ Microsoft Edge
+
+✓ Firefox
+
+✓ System default browser fallback
+
+V6.6 testing passed successfully.
+
+---
+
+## V6.7 — Vision Command Layer
+
+Module:
+
+```text
+tools/vision_command_layer.py
+```
+
+Responsible for:
+
+✓ Vision command detection
+
+✓ Pure command classification
+
+✓ Screen analysis commands
+
+✓ Active-window commands
+
+✓ OCR commands
+
+✓ Browser commands
+
+✓ Google opening
+
+✓ Web search
+
+✓ New tab
+
+✓ Refresh
+
+✓ Back
+
+✓ Forward
+
+✓ Safe unknown-command rejection
+
+Command classification is separated from command execution.
+
+Example:
+
+```text
+"what is on my screen"
+        ↓
+"analyze_screen"
+        ↓
+Vision Router
+        ↓
+Screen analysis
+```
+
+This prevents accidental duplicate execution.
+
+The command layer also provides:
+
+✓ `classify()`
+
+✓ `is_vision_command()`
+
+✓ `execute()`
+
+✓ Last-result tracking
+
+V6.7 testing passed successfully.
+
+---
+
+## V6.8 — Main Integration
+
+V6 was integrated into `main.py` while preserving V1–V5 behavior.
+
+Main runtime now supports:
+
+```text
+Wake Word
+    ↓
+Speech Recognition
+    ↓
+V6 Vision Detection
+    ↓
+Vision Command Layer
+    ↓
+Vision Tool
+    ↓
+Result
+    ↓
+Kokoro TTS
+```
+
+V6 commands are handled before AI fallback when they match a supported vision command.
+
+Existing V1–V5 routing remains preserved.
+
+V6.8 live voice integration was tested successfully.
+
+Tested commands included:
+
+```text
+what application is open
+
+what is on my screen
+
+what text is visible
+
+open Google
+
+search Google for python
+
+open a new tab
+
+go back
+
+refresh the page
+```
+
+✓ Active application detection
+
+✓ Screen analysis
+
+✓ OCR text reading
+
+✓ Google opening
+
+✓ Browser search
+
+✓ New tab
+
+✓ Back navigation
+
+✓ Refresh
+
+✓ Wake-word integration
+
+✓ Kokoro voice response
+
+✓ Clean shutdown
+
+V6.8 integration passed successfully.
+
+---
+
+## V6.9 — End-to-End Testing
+
+Dedicated test:
+
+```text
+tests/test_v6_e2e.py
+```
+
+The final V6.9 End-to-End test validates:
+
+✓ V6 module imports
+
+✓ V6.1 screen capture
+
+✓ V6.2 OCR
+
+✓ V6.3 structured screen analyzer
+
+✓ V6.4 active-window detection
+
+✓ V6.5 Vision Router
+
+✓ V6.6 Browser Control
+
+✓ V6.7 command classification
+
+✓ V6.7 command execution
+
+✓ Unknown-command safety
+
+✓ V6.8 main.py integration
+
+Final validation result:
+
+```text
+[PASSED] 11
+[FAILED] 0
+
+[TEST PASS] JARVIS V6.9 End-to-End testing passed.
+[STATUS] V6 is ready for final freeze.
+```
+
+**V6.9 is officially passed.**
+
+---
+
+## V6.10 — Final Freeze
+
+**✓ COMPLETE**
+
+V6 Computer Vision is officially frozen.
+
+The following modules are considered stable V6 modules:
+
+```text
+tools/vision_capture.py
+
+tools/vision_ocr.py
+
+tools/vision_analyzer.py
+
+tools/window_control_v6.py
+
+tools/vision_router.py
+
+tools/browser_control_v6.py
+
+tools/vision_command_layer.py
+```
+
+These modules should not be unnecessarily rewritten during V7 development.
+
+Future versions should integrate with the existing V6 interfaces rather than reconstructing the V6 system.
+
+---
+
+# V6 ARCHITECTURE
+
+```text
+                         JARVIS V6
+
                               │
+
                               ▼
+
                     ┌─────────────────┐
                     │    Wake Word    │
-                    │   "Hey Jarvis"  │
+                    │  "Hey Jarvis"   │
                     └────────┬────────┘
                              │
                              ▼
@@ -884,7 +1393,7 @@ This ensures that a blocked webpage does not terminate the JARVIS conversation.
                     │WakeWordDetector │
                     └────────┬────────┘
                              │
-                          DETECTED
+                         DETECTED
                              │
                              ▼
                     ┌─────────────────┐
@@ -902,43 +1411,125 @@ This ensures that a blocked webpage does not terminate the JARVIS conversation.
                 ┌────────────┴────────────┐
                 │                         │
                 ▼                         ▼
-        ┌───────────────┐        ┌────────────────┐
-        │  Web Router   │        │ Command Router │
-        │ router_web.py │        │   router.py    │
-        └───────┬───────┘        └───────┬────────┘
-                │                        │
-                ▼                        ▼
-       ┌─────────────────┐       Existing V1–V4
-       │ Web Intelligence│       Tools
-       │web_intelligence │
+       ┌─────────────────┐       ┌────────────────┐
+       │ Vision Command  │       │ Existing V1–V5 │
+       │     Layer       │       │    Routing     │
+       └────────┬────────┘       └────────────────┘
+                │
+                ▼
+       ┌─────────────────┐
+       │  Vision Router  │
        └────────┬────────┘
                 │
-        ┌───────┴─────────┐
-        │                 │
-        ▼                 ▼
-   Web Search        Webpage Reader
-        │                 │
-        └────────┬────────┘
-                 │
-                 ▼
-          Retrieved Sources
-                 │
-                 ▼
-          Local Ollama AI
-          Source Analysis
-                 │
-                 ▼
-              Result
-                 │
-                 ▼
-        ┌─────────────────┐
-        │     Speaker     │
-        │ Kokoro / am_adam│
-        └────────┬────────┘
-                 │
-                 ▼
-        Continue Conversation
+      ┌─────────┼──────────┐
+      │         │          │
+      ▼         ▼          ▼
+ Screen      Active     Browser
+ Capture     Window     Control
+      │         │          │
+      ▼         ▼          ▼
+     OCR   Window Info  Navigation
+      │
+      ▼
+Screen Analyzer
+      │
+      ▼
+Structured Vision Result
+      │
+      ▼
+   JARVIS Result
+      │
+      ▼
+┌─────────────────────┐
+│ Kokoro / am_adam   │
+└──────────┬──────────┘
+           │
+           ▼
+ Continue Conversation
 ```
+
+---
+
+# V6 FINAL TEST STATUS
+
+```text
+V6.1  Screen Capture             ✓ PASS
+
+V6.2  OCR                        ✓ PASS
+
+V6.3  Screen Analyzer            ✓ PASS
+
+V6.4  Active Window              ✓ PASS
+
+V6.5  Vision Router              ✓ PASS
+
+V6.6  Browser Control            ✓ PASS
+
+V6.7  Vision Command Layer       ✓ PASS
+
+V6.8  Main Integration           ✓ PASS
+
+V6.9  End-to-End Testing         ✓ PASS
+
+V6.10 Final Freeze               ✓ COMPLETE
+```
+
+**Final V6 End-to-End result:**
+
+```text
+11 TESTS PASSED
+0 TESTS FAILED
+```
+
+---
+
+# V6 IMPORTANT LIMITATIONS
+
+V6 is a Computer Vision foundation and does not yet provide advanced AI vision reasoning.
+
+Current limitations:
+
+✓ OCR accuracy depends on screen resolution, font, contrast and visible UI.
+
+✓ OCR may occasionally produce recognition artifacts.
+
+✓ Browser executable detection may fall back to the system default browser.
+
+✓ Browser keyboard control depends on `pyautogui`.
+
+✓ Vision analysis currently focuses on screen text/elements and active-window information.
+
+✓ V6 does not yet provide advanced object recognition.
+
+✓ V6 does not yet provide face recognition.
+
+✓ V6 does not yet provide continuous visual monitoring.
+
+✓ V6 does not automatically click arbitrary screen coordinates based solely on AI output.
+
+These are future capabilities and should not be considered V6 failures.
+
+---
+
+# V6 SAFETY
+
+V6 preserves the project's safety architecture.
+
+✓ Unknown V6 commands are rejected safely.
+
+✓ Vision classification is separate from execution.
+
+✓ Browser commands are explicitly recognized.
+
+✓ V6 does not expose unrestricted system-command execution.
+
+✓ Existing V3 security architecture remains active.
+
+✓ Existing V4 filesystem safety remains active.
+
+✓ V5 web intelligence remains primarily read-oriented.
+
+✓ Future sensitive visual actions should remain confirmation/security controlled.
 
 ---
 
@@ -983,19 +1574,53 @@ JARVIS/
 └── wakeword_test.py
 ```
 
-Important V5 modules inside `tools/`:
+---
+
+# CURRENT TOOLS STRUCTURE
+
+Important V3/V4/V5/V6 modules inside `tools/`:
 
 ```text
 tools/
+
 ├── router.py
 ├── router_web.py
 ├── web_intelligence.py
+│
 ├── filesystem_control.py
 ├── filesystem2.py
+│
 ├── app_control.py
 ├── system_control.py
-└── window_control.py
+├── window_control.py
+│
+├── vision_capture.py
+├── vision_ocr.py
+├── vision_analyzer.py
+├── window_control_v6.py
+├── vision_router.py
+├── browser_control_v6.py
+└── vision_command_layer.py
 ```
+
+---
+
+# CURRENT TEST STRUCTURE
+
+```text
+tests/
+
+├── test_vision_capture.py
+├── test_vision_ocr.py
+├── test_vision_analyzer.py
+├── test_window_control_v6.py
+├── test_browser_control_v6.py
+├── test_vision_router.py
+├── test_vision_command_layer.py
+└── test_v6_e2e.py
+```
+
+Existing V1–V5 tests remain part of the project where applicable.
 
 ---
 
@@ -1022,16 +1647,17 @@ Command / AI Detection
 
     ↓
 
-Web Router / Command Router
+Vision Command Layer / Web Router / Command Router
 
         │
-        ├── Web Intelligence
-        ├── Filesystem2
+
+        ├── V6 Computer Vision
+        ├── V5 Web Intelligence
+        ├── V4 Filesystem2
         ├── Existing V4 Filesystem
         ├── Application Control
         ├── System Control
-        ├── Window Control
-        └── AI Conversation
+        └── Window Control
 
     ↓
 
@@ -1039,7 +1665,7 @@ Security / Tool Handling
 
     ↓
 
-Windows / Filesystem / Web Tool
+Windows / Filesystem / Web / Vision Tool
 
     ↓
 
@@ -1060,6 +1686,12 @@ goodbye → Wake Word
 exit → Shutdown
 ```
 
+`main.py` should not become a large monolithic file.
+
+New major functionality should be implemented in dedicated modules and connected to the runtime.
+
+---
+
 ## `voice/wakeword.py`
 
 Responsible for:
@@ -1071,6 +1703,8 @@ Responsible for:
 * Cooldown
 * Model reset
 
+---
+
 ## `voice/listener.py`
 
 Responsible for:
@@ -1078,6 +1712,8 @@ Responsible for:
 * Microphone input
 * Speech recognition
 * Speech → text
+
+---
 
 ## `voice/speaker.py`
 
@@ -1088,6 +1724,8 @@ Responsible for:
 * `am_adam` JARVIS voice
 * Offline voice generation
 
+---
+
 ## `core/jarvis.py`
 
 Responsible for:
@@ -1095,6 +1733,15 @@ Responsible for:
 * Core JARVIS AI interaction
 * AI response generation
 * Conversational responses
+* Ollama integration
+
+Current local model:
+
+```text
+llama3.2:3b
+```
+
+---
 
 ## `tools/router.py`
 
@@ -1112,6 +1759,8 @@ Responsible for:
 
 This is an established large working file and should not be unnecessarily expanded or rewritten.
 
+---
+
 ## `tools/router_web.py`
 
 Responsible for:
@@ -1125,6 +1774,8 @@ Responsible for:
 * Local Ollama source analysis
 * Web-specific error handling
 
+---
+
 ## `tools/web_intelligence.py`
 
 Responsible for:
@@ -1136,6 +1787,8 @@ Responsible for:
 * Main-content extraction
 * Search-result formatting
 * Webpage reading
+
+---
 
 ## `tools/filesystem_control.py`
 
@@ -1153,7 +1806,9 @@ Responsible for established V4 functionality:
 * File creation
 * Folder creation
 
-This file remains unchanged as the established V4 filesystem foundation.
+This file remains the established V4 filesystem foundation.
+
+---
 
 ## `tools/filesystem2.py`
 
@@ -1168,6 +1823,8 @@ Responsible for V4 filesystem modification operations:
 * Move file
 * Move folder
 
+---
+
 ## `tools/app_control.py`
 
 Responsible for:
@@ -1178,6 +1835,8 @@ Responsible for:
 * Safe application termination
 * Last-opened application support
 
+---
+
 ## `tools/system_control.py`
 
 Responsible for:
@@ -1185,6 +1844,8 @@ Responsible for:
 * Volume control
 * Mute/unmute
 * Computer locking
+
+---
 
 ## `tools/window_control.py`
 
@@ -1196,6 +1857,8 @@ Responsible for:
 * Show desktop
 * Window switching
 
+---
+
 ## `security/command_security.py`
 
 Responsible for:
@@ -1205,6 +1868,118 @@ Responsible for:
 * Risky commands
 * Blocked commands
 * Confirmation handling
+
+---
+
+# V6 IMPORTANT FILES
+
+## `tools/vision_capture.py`
+
+Responsible for:
+
+* Screen capture
+* Screenshot creation
+* Screenshot storage
+
+---
+
+## `tools/vision_ocr.py`
+
+Responsible for:
+
+* OCR
+* Screen text extraction
+* OCR result handling
+
+---
+
+## `tools/vision_analyzer.py`
+
+Responsible for:
+
+* Structured screen analysis
+* OCR element detection
+* Coordinates
+* Dimensions
+* Confidence
+* Screen resolution
+* Clean OCR elements
+
+---
+
+## `tools/window_control_v6.py`
+
+Responsible for:
+
+* Active window detection
+* Window title
+* Process name
+* Process ID
+* Process path
+* Window class
+* Window state
+* Window geometry
+
+---
+
+## `tools/vision_router.py`
+
+Responsible for:
+
+* Vision tool coordination
+* Screen capture
+* Screen analysis
+* Active-window detection
+* Unified vision result
+
+---
+
+## `tools/browser_control_v6.py`
+
+Responsible for:
+
+* Browser detection
+* URL validation
+* URL normalization
+* Opening websites
+* Google search
+* New tab
+* Refresh
+* Back
+* Forward
+* Browser keyboard control
+* Browser status
+
+---
+
+## `tools/vision_command_layer.py`
+
+Responsible for:
+
+* V6 command classification
+* V6 command detection
+* Screen commands
+* Active-window commands
+* OCR commands
+* Browser commands
+* Search commands
+* Browser navigation commands
+* Safe unknown-command handling
+* Vision command execution
+
+Important architectural rule:
+
+```text
+classify()
+    ↓
+Determine action
+    ↓
+execute()
+    ↓
+Perform action once
+```
+
+The classifier must remain side-effect free.
 
 ---
 
@@ -1239,12 +2014,16 @@ If any single code file approaches or exceeds approximately **1000 lines**, do n
 Instead:
 
 1. Create a second appropriately named module.
+
 2. Put the new functionality in the new module.
+
 3. Import/connect it to the existing system.
+
 4. Preserve the existing working file.
+
 5. Avoid unnecessary refactoring.
 
-This rule applies to V5 and all future versions.
+This rule applies to V5, V6 and all future versions.
 
 ---
 
@@ -1253,6 +2032,10 @@ This rule applies to V5 and all future versions.
 Complete and test the current version before moving to the next major version.
 
 Do not restart completed versions without a debugging reason.
+
+V1–V6 are completed.
+
+The next development phase is V7.
 
 ---
 
@@ -1266,17 +2049,28 @@ Destructive filesystem functionality must remain controlled and should receive a
 
 Web intelligence should remain primarily read-oriented and should not automatically execute arbitrary online actions.
 
+Vision commands should remain explicitly classified and controlled.
+
 ---
 
 ## 6. Backward compatibility
 
 New versions must preserve working functionality from previous versions unless there is a clear architectural reason to change it.
 
+V7 must preserve V1–V6 behavior.
+
 ---
 
 ## 7. Test before advancing
 
 Every major feature must be manually tested and, where practical, automated tests should be added.
+
+V6 has passed final End-to-End testing with:
+
+```text
+11 PASSED
+0 FAILED
+```
 
 ---
 
@@ -1287,10 +2081,15 @@ Development should proceed incrementally.
 For each new feature:
 
 1. Create the appropriate new module when practical.
+
 2. Connect it to the existing router/runtime.
+
 3. Test it.
+
 4. Fix problems.
+
 5. Verify backward compatibility.
+
 6. Only then continue to the next feature.
 
 ---
@@ -1309,7 +2108,20 @@ When modifying an established file:
 
 ---
 
-# V5 FINAL POSITION
+## 10. Frozen-version rule
+
+Once a major version has passed its final End-to-End validation and has been frozen:
+
+* Do not modify stable modules unnecessarily.
+* Do not refactor working code without a real requirement.
+* New versions should build on the existing interfaces.
+* Fix frozen-version code only when a real regression or integration bug is discovered.
+
+V6 is currently frozen under this rule.
+
+---
+
+# V6 FINAL POSITION
 
 ```text
 Phase 0  ████████████████████ COMPLETE
@@ -1324,9 +2136,9 @@ V4       ████████████████████ COMPLETE
 
 V5       ████████████████████ COMPLETE
 
-V6       ░░░░░░░░░░░░░░░░░░░░ NEXT
+V6       ████████████████████ COMPLETE
 
-V7       ░░░░░░░░░░░░░░░░░░░░
+V7       ░░░░░░░░░░░░░░░░░░░░ NEXT
 
 V8       ░░░░░░░░░░░░░░░░░░░░
 
@@ -1341,49 +2153,57 @@ V12      ░░░░░░░░░░░░░░░░░░░░
 
 ---
 
-# V5 FINAL SUMMARY
+# V6 FINAL SUMMARY
 
-V5 — Web Intelligence is complete and functionally tested.
+V6 — Computer Vision is complete and frozen.
 
 Completed:
 
-✓ Web search
+✓ Screen capture
 
-✓ Search result processing
+✓ Screenshot storage
 
-✓ Website retrieval
+✓ OCR
 
-✓ Web-page information extraction
+✓ Structured screen analysis
 
-✓ Current information queries
+✓ Active-window detection
 
-✓ News/search intelligence
+✓ Browser control
 
-✓ Online information summarization
+✓ Browser navigation
 
-✓ Controlled web interaction foundation
+✓ Google opening
 
-✓ Search result source handling
+✓ Web search through browser control
 
-✓ Webpage access error handling
+✓ Screen text reading
 
-✓ 403 fallback handling
+✓ Vision command classification
 
-✓ Local Ollama source analysis
+✓ Vision command execution
 
-✓ Source-grounded current answers
+✓ Pure command classification
 
-✓ Voice command integration
-
-✓ Kokoro offline voice integration
+✓ V6 main runtime integration
 
 ✓ Wake-word integration
 
-✓ V1–V4 backward compatibility
+✓ Kokoro integration
 
-✓ Syntax validation
+✓ V1–V5 backward compatibility
 
-V5 is now ready for final Git versioning.
+✓ V6 safety handling
+
+✓ V6.1–V6.8 feature validation
+
+✓ V6.9 End-to-End testing
+
+✓ V6.10 final freeze
+
+**Final V6 E2E result: 11 PASSED / 0 FAILED.**
+
+V6 is officially complete and frozen.
 
 ---
 
@@ -1402,9 +2222,13 @@ V4       COMPLETE
 
 V5       COMPLETE
 
-V6       NEXT
+V6       COMPLETE — FROZEN
+
+V7       NEXT
 ```
 
-**Next development session: Begin V6 — Computer Vision.**
+**Next development session: Begin V7 — Memory.**
 
-Do not restart V1/V2/V3/V4/V5 unless debugging an existing feature.
+Do not restart V1/V2/V3/V4/V5/V6 unless debugging an existing feature.
+
+V7 should be developed incrementally while preserving the frozen V6 Computer Vision foundation.
