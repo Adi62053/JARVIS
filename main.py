@@ -4,9 +4,13 @@ import speech_recognition as sr
 from voice.listener import Listener
 from voice.speaker import Speaker
 from voice.wakeword import WakeWordDetector
+
 from core.jarvis import Jarvis
+
 from tools.router import CommandRouter
 from tools.router_web import WebRouter
+from tools.vision_command_layer import VisionCommandLayer
+
 from security.command_security import CommandSecurity
 
 
@@ -20,9 +24,16 @@ speaker = None
 wakeword = None
 router = None
 security = None
+vision_layer = None
 
-# V5 WebRouter can safely be created during import.
+
+# ==========================================
+# V5 WEB ROUTER
+# ==========================================
+
+# WebRouter can safely be created during import.
 # This allows V5 web testing without starting JARVIS.
+
 web_router = WebRouter()
 
 
@@ -33,6 +44,38 @@ web_router = WebRouter()
 def is_tool_command(command):
 
     command = command.lower().strip()
+
+    # ======================================
+    # V6 VISION COMMANDS
+    #
+    # IMPORTANT:
+    # Vision commands are checked first so
+    # they do not fall through to Ollama.
+    # ======================================
+
+    if vision_layer is not None:
+
+        try:
+
+            vision_result = (
+                vision_layer.execute(
+                    command
+                )
+            )
+
+            if (
+                vision_result["action"]
+                != "unknown"
+            ):
+
+                return True
+
+        except Exception as e:
+
+            print(
+                "JARVIS V6 vision detection error:",
+                e
+            )
 
     # ======================================
     # V5 WEB COMMANDS
@@ -134,9 +177,9 @@ def is_tool_command(command):
 
         return True
 
-    # --------------------------------------
-    # Volume prefixes
-    # --------------------------------------
+    # ======================================
+    # VOLUME PREFIXES
+    # ======================================
 
     volume_prefixes = [
 
@@ -544,6 +587,42 @@ def handle_tool_result(result):
 
 
 # ==========================================
+# HANDLE V6 RESULT
+# ==========================================
+
+def handle_vision_result(result):
+
+    if not result:
+
+        return
+
+    response = result.get(
+        "response",
+        ""
+    )
+
+    if response:
+
+        print(
+            "\nJARVIS V6:"
+        )
+
+        print(
+            response
+        )
+
+        speaker.speak(
+            response
+        )
+
+    else:
+
+        speaker.speak(
+            "The vision command completed, sir."
+        )
+
+
+# ==========================================
 # MAIN JARVIS LOOP
 # ==========================================
 
@@ -555,27 +634,41 @@ def main():
     global wakeword
     global router
     global security
+    global vision_layer
 
     # ======================================
     # JARVIS SETUP
     # ======================================
 
     jarvis = Jarvis()
+
     listener = Listener()
+
     speaker = Speaker()
+
     wakeword = WakeWordDetector()
+
     router = CommandRouter()
+
     security = CommandSecurity()
+
+    vision_layer = VisionCommandLayer()
 
     # ======================================
     # STARTUP
     # ======================================
 
     print("==========================================")
-    print("             JARVIS V5")
+    print("             JARVIS V6")
     print("==========================================")
+    print("Computer Vision: ACTIVE")
+    print("Browser Control: ACTIVE")
+    print()
     print("Say 'Hey Jarvis' to activate.")
-    print("Say 'goodbye' or 'talk to you later' to end a conversation.")
+    print(
+        "Say 'goodbye' or 'talk to you later' "
+        "to end a conversation."
+    )
     print("Say 'exit' to shut down JARVIS.")
     print("Press Ctrl+C to stop.")
     print()
@@ -675,9 +768,80 @@ def main():
                         command
                     ):
 
-                        # ----------------------------------
-                        # SECURITY CHECK
-                        # ----------------------------------
+                        # ==================================
+                        # CHECK V6 FIRST
+                        # ==================================
+
+                        vision_result = (
+                            vision_layer.execute(
+                                command
+                            )
+                        )
+
+                        if (
+                            vision_result["action"]
+                            != "unknown"
+                        ):
+
+                            # ----------------------------------
+                            # SECURITY CHECK
+                            # ----------------------------------
+
+                            security_level = (
+                                security.check(
+                                    command
+                                )
+                            )
+
+                            # ----------------------------------
+                            # BLOCKED
+                            # ----------------------------------
+
+                            if (
+                                security_level
+                                == CommandSecurity.BLOCKED
+                            ):
+
+                                speaker.speak(
+                                    "I cannot perform that "
+                                    "command because it is "
+                                    "blocked for safety, sir."
+                                )
+
+                                continue
+
+                            # ----------------------------------
+                            # RISKY
+                            # ----------------------------------
+
+                            if (
+                                security_level
+                                == CommandSecurity.RISKY
+                            ):
+
+                                confirmed = (
+                                    confirm_risky_command(
+                                        command
+                                    )
+                                )
+
+                                if not confirmed:
+
+                                    continue
+
+                            # ----------------------------------
+                            # EXECUTE V6
+                            # ----------------------------------
+
+                            handle_vision_result(
+                                vision_result
+                            )
+
+                            continue
+
+                        # ==================================
+                        # SECURITY CHECK FOR V3/V4/V5
+                        # ==================================
 
                         security_level = (
                             security.check(
@@ -721,9 +885,9 @@ def main():
 
                                 continue
 
-                        # ----------------------------------
+                        # ==================================
                         # EXECUTE V5 WEB COMMAND
-                        # ----------------------------------
+                        # ==================================
 
                         if web_router.is_web_command(
                             command
@@ -735,9 +899,9 @@ def main():
                                 )
                             )
 
-                        # ----------------------------------
+                        # ==================================
                         # EXECUTE EXISTING V3/V4 COMMAND
-                        # ----------------------------------
+                        # ==================================
 
                         else:
 
@@ -747,9 +911,9 @@ def main():
                                 )
                             )
 
-                        # ----------------------------------
+                        # ==================================
                         # HANDLE RESULT
-                        # ----------------------------------
+                        # ==================================
 
                         if result:
 
@@ -882,7 +1046,7 @@ def main():
 # - Microphone loop
 # - JARVIS conversation loop
 #
-# This allows V5 WebRouter testing through:
+# This allows testing through:
 #
 # from main import web_router
 #
@@ -891,3 +1055,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
