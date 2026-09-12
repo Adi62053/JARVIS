@@ -29,3 +29,5 @@ logs/
 Thumbs.db
 # API keys
 voice/apikeys
+data/screenshots/
+memory/data/
