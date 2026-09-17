@@ -31,3 +31,6 @@ Thumbs.db
 voice/apikeys
 data/screenshots/
 memory/data/
+
+# Old virtual environment
+.venv_old_abc/

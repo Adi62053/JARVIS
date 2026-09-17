@@ -1,0 +1,119 @@
+[
+  {
+    "name": "V8 Test Automation",
+    "description": "Initial V8 integration test",
+    "enabled": true,
+    "conditions": [],
+    "steps": [
+      {
+        "action": "OPEN_APP",
+        "parameters": {
+          "app": "notepad"
+        },
+        "security_level": "SAFE"
+      },
+      {
+        "action": "WAIT",
+        "parameters": {
+          "seconds": 2
+        },
+        "security_level": "SAFE"
+      },
+      {
+        "action": "OPEN_APP",
+        "parameters": {
+          "app": "notepad"
+        },
+        "security_level": "SAFE"
+      },
+      {
+        "action": "WAIT",
+        "parameters": {
+          "seconds": 3.0
+        },
+        "security_level": "SAFE"
+      },
+      {
+        "action": "OPEN_FILE",
+        "parameters": {
+          "path": "C:\\Users\\abc\\Desktop\\JARVIS\\main_v8.py"
+        },
+        "security_level": "SAFE"
+      },
+      {
+        "action": "OPEN_FOLDER",
+        "parameters": {
+          "path": "C:\\Users\\abc\\Desktop\\JARVIS"
+        },
+        "security_level": "SAFE"
+      },
+      {
+        "action": "OPEN_URL",
+        "parameters": {
+          "url": "https://www.google.com"
+        },
+        "security_level": "SAFE"
+      },
+      {
+        "action": "CREATE_FILE",
+        "parameters": {
+          "path": "C:\\Users\\abc\\Desktop\\JARVIS\\test.txt"
+        },
+        "security_level": "SAFE"
+      },
+      {
+        "action": "CREATE_FOLDER",
+        "parameters": {
+          "path": "C:\\Users\\abc\\Desktop\\JARVIS\\TestFolder"
+        },
+        "security_level": "SAFE"
+      },
+      {
+        "action": "MOVE_FILE",
+        "parameters": {
+          "source": "C:\\source\\test.txt",
+          "destination": "C:\\destination\\test.txt"
+        },
+        "security_level": "SAFE"
+      },
+      {
+        "action": "COPY_FILE",
+        "parameters": {
+          "source": "C:\\source\\test.txt",
+          "destination": "C:\\destination\\test_copy.txt"
+        },
+        "security_level": "SAFE"
+      }
+    ]
+  },
+  {
+    "name": "V8 Scheduler Integration Test",
+    "description": "V8.15 scheduler integration test",
+    "enabled": true,
+    "conditions": [],
+    "steps": [
+      {
+        "action": "WAIT",
+        "parameters": {
+          "seconds": 0
+        },
+        "security_level": "SAFE"
+      }
+    ]
+  },
+  {
+    "name": "V8.15 Unit Integration Test",
+    "description": "Full V8.15 integration test",
+    "enabled": true,
+    "conditions": [],
+    "steps": [
+      {
+        "action": "WAIT",
+        "parameters": {
+          "seconds": 0
+        },
+        "security_level": "SAFE"
+      }
+    ]
+  }
+]

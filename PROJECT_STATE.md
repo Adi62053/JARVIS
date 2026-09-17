@@ -2,35 +2,65 @@
 
 ## Current Version
 
-**V6 — COMPUTER VISION**
+**V7 — MEMORY**
 
 ## Current Status
 
-**V6 COMPLETED AND FROZEN**
+**V7 COMPLETE AND FROZEN**
 
 JARVIS is now a voice-controlled Windows laptop assistant with:
 
 * Voice conversation
+
 * Wake-word activation
+
 * Controlled Windows operations
+
 * File and folder management
+
 * Web search and web intelligence
+
 * Current-information questions
+
 * Webpage retrieval and text extraction
+
 * Search-result fallback when webpages block direct access
+
 * Screen capture
+
 * OCR
+
 * Structured screen analysis
+
 * Active-window detection
+
 * Browser control
+
 * Vision command routing
+
+* Persistent local memory
+
+* Memory search and retrieval
+
+* Memory update and deletion
+
+* Session and persistent memory context
+
+* Local Ollama memory-context integration
+
+* Voice-controlled memory operations
+
 * Local offline Kokoro TTS voice
 
-V6 preserves all working V1, V2, V3, V4 and V5 capabilities and adds controlled Computer Vision capabilities.
+V7 preserves all working V1, V2, V3, V4, V5 and V6 capabilities and adds controlled persistent Memory capabilities.
 
-**V6 final End-to-End validation: 11 PASSED / 0 FAILED.**
+**V7 final full test suite: 96 PASSED / 0 FAILED / 0 ERRORS.**
 
-**V6 is officially frozen.**
+**V7.6 real Ollama End-to-End validation: 3 PASSED.**
+
+**V7.12 memory lifecycle End-to-End validation: 1 PASSED.**
+
+**V7 is officially frozen.**
 
 ---
 
@@ -44,8 +74,8 @@ V6 preserves all working V1, V2, V3, V4 and V5 capabilities and adds controlled 
 | V3      | Laptop Control      | Controlled application and Windows operations.                                             |
 | V4      | Files & Folders     | Search, create, inspect, rename, copy, move and delete files/folders.                      |
 | V5      | Web Intelligence    | Search, retrieve and use online information safely.                                        |
-| **V6**  | **Computer Vision** | **Screen understanding and visual interaction.**                                           |
-| V7      | Memory              | Persistent, user-controlled memory and context.                                            |
+| V6      | Computer Vision     | Screen understanding and visual interaction.                                               |
+| **V7**  | **Memory**          | **Persistent, user-controlled memory and context.**                                        |
 | V8      | Personal Automation | Reusable multi-action workflows.                                                           |
 | V9      | Security System     | Permissions, confirmations, authentication and sensitive-action controls.                  |
 | V10     | Background Mode     | Start with Windows and wait for wake word.                                                 |
@@ -642,15 +672,25 @@ Behavior:
 
 ```text
 Voice Command
+
       ↓
+
 Web Router
+
       ↓
+
 Web Search
+
       ↓
+
 5 Search Results
+
       ↓
+
 Results displayed in terminal
+
       ↓
+
 Short Kokoro confirmation
 ```
 
@@ -682,17 +722,29 @@ Behavior:
 
 ```text
 Voice Question
+
       ↓
+
 Web Router
+
       ↓
+
 Internal Web Search
+
       ↓
+
 Retrieved Sources
+
       ↓
+
 Local Ollama Analysis
+
       ↓
+
 Source-grounded Answer
+
       ↓
+
 Kokoro Voice
 ```
 
@@ -794,13 +846,21 @@ Behavior:
 
 ```text
 Webpage Fetch
+
       ↓
+
 Access Blocked
+
       ↓
+
 Search Result Fallback
+
       ↓
+
 Use Available Search Snippet
+
       ↓
+
 Kokoro Voice
 ```
 
@@ -1200,11 +1260,17 @@ Example:
 
 ```text
 "what is on my screen"
+
         ↓
+
 "analyze_screen"
+
         ↓
+
 Vision Router
+
         ↓
+
 Screen analysis
 ```
 
@@ -1232,17 +1298,29 @@ Main runtime now supports:
 
 ```text
 Wake Word
+
     ↓
+
 Speech Recognition
+
     ↓
+
 V6 Vision Detection
+
     ↓
+
 Vision Command Layer
+
     ↓
+
 Vision Tool
+
     ↓
+
 Result
+
     ↓
+
 Kokoro TTS
 ```
 
@@ -1334,9 +1412,11 @@ Final validation result:
 
 ```text
 [PASSED] 11
+
 [FAILED] 0
 
 [TEST PASS] JARVIS V6.9 End-to-End testing passed.
+
 [STATUS] V6 is ready for final freeze.
 ```
 
@@ -1424,8 +1504,8 @@ Future versions should integrate with the existing V6 interfaces rather than rec
       ┌─────────┼──────────┐
       │         │          │
       ▼         ▼          ▼
- Screen      Active     Browser
- Capture     Window     Control
+   Screen     Active     Browser
+   Capture    Window     Control
       │         │          │
       ▼         ▼          ▼
      OCR   Window Info  Navigation
@@ -1437,7 +1517,7 @@ Screen Analyzer
 Structured Vision Result
       │
       ▼
-   JARVIS Result
+  JARVIS Result
       │
       ▼
 ┌─────────────────────┐
@@ -1445,7 +1525,7 @@ Structured Vision Result
 └──────────┬──────────┘
            │
            ▼
- Continue Conversation
+Continue Conversation
 ```
 
 ---
@@ -1478,6 +1558,7 @@ V6.10 Final Freeze               ✓ COMPLETE
 
 ```text
 11 TESTS PASSED
+
 0 TESTS FAILED
 ```
 
@@ -1533,74 +1614,1019 @@ V6 preserves the project's safety architecture.
 
 ---
 
+# V7 — MEMORY
+
+## V7 Status
+
+**✓ COMPLETE — FROZEN**
+
+V7 adds persistent local memory to JARVIS without replacing the existing V1–V6 architecture.
+
+V7 provides:
+
+✓ Local persistent memory
+
+✓ SQLite memory storage
+
+✓ Memory categories
+
+✓ Save memory
+
+✓ Retrieve memory
+
+✓ Search memory
+
+✓ List memory
+
+✓ Count memory
+
+✓ Update memory
+
+✓ Forget/delete memory
+
+✓ Deterministic memory retrieval
+
+✓ Relevance scoring
+
+✓ Meaningful phrase matching
+
+✓ Session memory context
+
+✓ Persistent memory context
+
+✓ Ollama memory-context integration
+
+✓ Natural-language memory commands
+
+✓ Voice-controlled memory operations
+
+✓ Confirmation for destructive memory deletion
+
+✓ Memory lifecycle testing
+
+✓ V6 backward compatibility
+
+✓ Full End-to-End validation
+
+✓ Final V7 freeze
+
+---
+
+## V7.1 — Memory Architecture
+
+V7 memory is implemented as a modular subsystem rather than placing memory logic directly inside `main_v7.py`.
+
+The memory subsystem contains:
+
+```text
+memory/
+
+├── memory_commands.py
+
+├── memory_context.py
+
+├── memory_controller.py
+
+├── memory_manager.py
+
+├── memory_ollama.py
+
+├── memory_retrieval.py
+
+├── memory_search.py
+
+├── memory_store.py
+
+└── __init__.py
+```
+
+The persistent memory database is stored locally:
+
+```text
+memory/data/jarvis_memory.db
+```
+
+The memory database is user-specific persistent data and is not committed to Git.
+
+---
+
+## V7.2 — Local Memory Storage
+
+Module:
+
+```text
+memory/memory_store.py
+```
+
+Responsible for:
+
+✓ SQLite database initialization
+
+✓ Memory table creation
+
+✓ Memory existence checking
+
+✓ Local persistent storage
+
+✓ Memory insertion
+
+✓ Memory retrieval
+
+✓ Memory updating
+
+✓ Memory deletion
+
+✓ Memory counting
+
+✓ Injectable database path for testing
+
+Database schema:
+
+```text
+memories
+
+id
+
+category
+
+content
+
+created_at
+
+updated_at
+```
+
+Memory remains fully local.
+
+No external memory service is required.
+
+---
+
+## V7.3 — Memory Manager
+
+Module:
+
+```text
+memory/memory_manager.py
+```
+
+Responsible for:
+
+✓ Memory CRUD operations
+
+✓ Save memory
+
+✓ Get memory
+
+✓ List memories
+
+✓ Update memory
+
+✓ Delete memory
+
+✓ Count memories
+
+✓ Input validation
+
+✓ Store abstraction
+
+The manager keeps higher-level memory operations separate from the SQLite implementation.
+
+---
+
+## V7.4 — Memory Search
+
+Module:
+
+```text
+memory/memory_search.py
+```
+
+Responsible for:
+
+✓ Memory search
+
+✓ SQLite-backed search
+
+✓ Search result limiting
+
+✓ Keyword matching
+
+✓ Search result ordering
+
+Maximum search result count:
+
+```text
+50
+```
+
+Search remains deterministic and local.
+
+---
+
+## V7.5 — Memory Retrieval
+
+Module:
+
+```text
+memory/memory_retrieval.py
+```
+
+Responsible for:
+
+✓ Deterministic memory reranking
+
+✓ Relevance scoring
+
+✓ Exact query matching
+
+✓ Meaningful phrase matching
+
+✓ Meaningful term matching
+
+✓ Category matching
+
+✓ Adjacent-word matching
+
+✓ Result limiting
+
+Important scoring behavior includes:
+
+```text
+Exact full query       +10
+
+Meaningful phrase      +8
+
+Meaningful term        +3
+
+Category match         +2
+```
+
+The retrieval system includes:
+
+```text
+MEANINGFUL_PHRASE_BONUS = 8
+```
+
+Maximum retrieval results:
+
+```text
+10
+```
+
+The retrieval system was specifically validated against natural-language questions such as:
+
+```text
+what is my favourite programming language
+```
+
+and correctly ranked the relevant memory.
+
+---
+
+## V7.6 — Memory Context
+
+Module:
+
+```text
+memory/memory_context.py
+```
+
+Responsible for:
+
+✓ Building relevant memory context
+
+✓ Context limiting
+
+✓ Relevance thresholds
+
+✓ Deterministic context generation
+
+Default context limit:
+
+```text
+5
+```
+
+Maximum context limit:
+
+```text
+10
+```
+
+Minimum relevance score:
+
+```text
+1
+```
+
+The context builder does not directly call Ollama.
+
+The context builder does not automatically save memory.
+
+This keeps memory retrieval deterministic and controlled.
+
+---
+
+## V7.7 — Memory Commands
+
+Module:
+
+```text
+memory/memory_commands.py
+```
+
+Responsible for:
+
+✓ Natural-language memory command parsing
+
+✓ Save commands
+
+✓ Search commands
+
+✓ List commands
+
+✓ Count commands
+
+✓ Delete commands
+
+✓ Update commands
+
+✓ Natural memory questions
+
+✓ Favourite-subject precision
+
+✓ Missing memory number handling
+
+Memory update patterns include:
+
+```text
+update memory number <number> to <content>
+
+change memory number <number> to <content>
+
+edit memory number <number> to <content>
+```
+
+Memory deletion patterns include:
+
+```text
+forget memory number <number>
+
+delete memory number <number>
+
+remove memory number <number>
+
+forget memory <number>
+
+delete memory <number>
+
+remove memory <number>
+```
+
+If a memory number is missing, JARVIS responds safely:
+
+```text
+Please specify the memory number.
+```
+
+---
+
+## V7.8 — Memory Controller
+
+Module:
+
+```text
+memory/memory_controller.py
+```
+
+Responsible for:
+
+✓ Memory operation orchestration
+
+✓ Memory save operations
+
+✓ Memory retrieval operations
+
+✓ Memory search
+
+✓ Memory context retrieval
+
+✓ Memory count
+
+✓ Memory get operations
+
+✓ Memory deletion
+
+✓ Memory update
+
+✓ Delete confirmation state
+
+✓ Safe memory operations
+
+The controller does not directly call the main runtime, voice system or Ollama.
+
+This keeps the architecture modular.
+
+---
+
+## V7.9 — Ollama Memory Integration
+
+Module:
+
+```text
+memory/memory_ollama.py
+```
+
+Responsible for:
+
+✓ Local Ollama memory-context integration
+
+✓ Providing relevant memory context to Ollama
+
+✓ Preserving local-only AI architecture
+
+✓ Testing memory context with the actual local Ollama model
+
+Current local model:
+
+```text
+llama3.2:3b
+```
+
+V7.6 real Ollama End-to-End validation:
+
+```text
+3 PASSED
+```
+
+---
+
+## V7.10 — Voice Integration
+
+V7 integrates memory operations into the existing JARVIS voice pipeline.
+
+Behavior:
+
+```text
+Wake Word
+
+      ↓
+
+Speech Recognition
+
+      ↓
+
+Memory Command Detection
+
+      ↓
+
+Memory Controller
+
+      ↓
+
+Memory Operation
+
+      ↓
+
+JARVIS Response
+
+      ↓
+
+Kokoro / am_adam
+```
+
+✓ Memory save through voice
+
+✓ Memory search through voice
+
+✓ Memory retrieval through voice
+
+✓ Memory update through voice
+
+✓ Memory deletion through voice
+
+✓ Memory count through voice
+
+✓ Natural memory questions
+
+✓ Kokoro integration
+
+✓ Wake-word integration
+
+---
+
+## V7.11 — Security / Confirmation
+
+V7 preserves the existing safety architecture.
+
+Memory deletion is confirmation controlled.
+
+Destructive memory operations do not execute without the required confirmation.
+
+The memory subsystem does not expose unrestricted database operations to Ollama.
+
+The AI model does not directly control SQLite.
+
+Memory commands are explicitly parsed and routed.
+
+---
+
+## V7.12 — Full Integration and End-to-End Testing
+
+Dedicated V7 lifecycle testing validates the complete memory lifecycle.
+
+The lifecycle includes:
+
+```text
+Save
+
+  ↓
+
+Search
+
+  ↓
+
+Retrieve
+
+  ↓
+
+Update
+
+  ↓
+
+Retrieve Updated Memory
+
+  ↓
+
+Delete
+
+  ↓
+
+Verify Deletion
+```
+
+V7.12 lifecycle End-to-End result:
+
+```text
+1 PASSED
+```
+
+V7 preserves the existing V1–V6 runtime behavior.
+
+---
+
+## V7.13 — Final Validation
+
+V7 validation included:
+
+✓ Memory module testing
+
+✓ Memory store testing
+
+✓ Memory manager testing
+
+✓ Memory search testing
+
+✓ Memory retrieval testing
+
+✓ Memory context testing
+
+✓ Memory command testing
+
+✓ Memory Ollama testing
+
+✓ Real Ollama End-to-End testing
+
+✓ Memory lifecycle End-to-End testing
+
+✓ V6 regression validation
+
+✓ Full project test suite
+
+✓ Tesseract OCR regression validation
+
+Final full test suite:
+
+```text
+96 PASSED
+
+0 FAILED
+
+0 ERRORS
+
+13 WARNINGS
+```
+
+The warnings were accepted as non-blocking.
+
+The warnings consist primarily of:
+
+✓ Older V6 End-to-End tests returning boolean values instead of assertions
+
+✓ `speech_recognition` dependency deprecation warnings related to `aifc` and `audioop`
+
+No test failures or errors remain.
+
+---
+
+## V7.14 — Final Freeze
+
+**✓ COMPLETE**
+
+V7 Memory is officially frozen.
+
+Git commit:
+
+```text
+f127a2f
+```
+
+Freeze tag:
+
+```text
+v7.14-freeze
+```
+
+Commit message:
+
+```text
+Freeze JARVIS V7 Memory
+```
+
+Tag message:
+
+```text
+JARVIS V7.14 Memory Freeze
+```
+
+The working tree was verified clean after the freeze.
+
+The V7 memory database remains excluded from Git:
+
+```text
+memory/data/
+```
+
+Generated screenshots remain excluded from Git:
+
+```text
+data/screenshots/
+```
+
+The following V7 memory modules are considered stable:
+
+```text
+memory/memory_commands.py
+
+memory/memory_context.py
+
+memory/memory_controller.py
+
+memory/memory_manager.py
+
+memory/memory_ollama.py
+
+memory/memory_retrieval.py
+
+memory/memory_search.py
+
+memory/memory_store.py
+```
+
+These modules should not be unnecessarily rewritten during V8 development.
+
+Future versions should integrate with the existing V7 interfaces rather than reconstructing the V7 memory system.
+
+---
+
+# V7 ARCHITECTURE
+
+```text
+                         JARVIS V7
+
+                              │
+
+                              ▼
+
+                    ┌─────────────────┐
+                    │    Wake Word    │
+                    │  "Hey Jarvis"   │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │WakeWordDetector │
+                    └────────┬────────┘
+                             │
+                         DETECTED
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │    Listener     │
+                    │  Speech → Text  │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │  Main Runtime   │
+                    └────────┬────────┘
+                             │
+                       Intent / Command
+                             │
+          ┌──────────────────┼──────────────────┐
+          │                  │                  │
+          ▼                  ▼                  ▼
+   Memory Commands     Existing V1–V6     Normal AI
+          │                Routing          Conversation
+          ▼                  │                  │
+   Memory Controller         │                  │
+          │                  │                  │
+     ┌────┼────┐             │                  │
+     │    │    │             │                  │
+     ▼    ▼    ▼             │                  │
+   Store Search Context      │                  │
+     │    │    │             │                  │
+     └────┼────┘             │                  │
+          │                  │                  │
+          ▼                  ▼                  ▼
+   Memory Retrieval    V6 / V5 / V4 / V3    Ollama
+          │            Existing Tools          │
+          │                  │                  │
+          └──────────────────┼──────────────────┘
+                             │
+                             ▼
+                   Context / JARVIS Result
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │ Kokoro / am_adam│
+                    └────────┬────────┘
+                             │
+                             ▼
+                      Continue Conversation
+```
+
+---
+
+# V7 FINAL TEST STATUS
+
+```text
+V7.1   Memory Architecture           ✓ PASS
+
+V7.2   Local Memory Storage          ✓ PASS
+
+V7.3   Memory Manager                ✓ PASS
+
+V7.4   Memory Search                 ✓ PASS
+
+V7.5   Memory Retrieval              ✓ PASS
+
+V7.6   Memory Context / Ollama       ✓ PASS
+
+V7.7   Memory Commands               ✓ PASS
+
+V7.8   Memory Controller             ✓ PASS
+
+V7.9   Ollama Integration            ✓ PASS
+
+V7.10  Voice Integration             ✓ PASS
+
+V7.11  Security / Confirmation       ✓ PASS
+
+V7.12  End-to-End Testing            ✓ PASS
+
+V7.13  Final Validation              ✓ PASS
+
+V7.14  Final Freeze                  ✓ COMPLETE
+```
+
+**Final V7 full test result:**
+
+```text
+96 TESTS PASSED
+
+0 TESTS FAILED
+
+0 TEST ERRORS
+
+13 WARNINGS
+```
+
+**V7.6 real Ollama E2E result:**
+
+```text
+3 TESTS PASSED
+```
+
+**V7.12 lifecycle E2E result:**
+
+```text
+1 TEST PASSED
+```
+
+---
+
+# V7 IMPORTANT LIMITATIONS
+
+V7 is a persistent memory foundation and does not yet provide unrestricted autonomous memory behavior.
+
+Current limitations:
+
+✓ Memory is explicitly stored and controlled.
+
+✓ Memory retrieval is deterministic.
+
+✓ Memory search is local.
+
+✓ Memory is stored in SQLite.
+
+✓ Memory context is limited to relevant results.
+
+✓ Memory does not automatically save every conversation.
+
+✓ Memory does not automatically modify itself from arbitrary AI output.
+
+✓ Destructive memory operations remain confirmation controlled.
+
+✓ Memory does not yet provide advanced semantic vector-database retrieval.
+
+✓ Memory does not yet provide automatic long-term behavioral learning.
+
+✓ Memory does not yet provide advanced user-profile inference.
+
+These are future capabilities and should not be considered V7 failures.
+
+---
+
+# V7 SAFETY
+
+V7 preserves the project's safety architecture.
+
+✓ Memory commands are explicitly classified and routed.
+
+✓ Memory deletion requires controlled confirmation.
+
+✓ Ollama cannot directly execute unrestricted database operations.
+
+✓ Memory operations remain inside dedicated modules.
+
+✓ Existing V3 security architecture remains active.
+
+✓ Existing V4 filesystem safety remains active.
+
+✓ V5 web intelligence remains primarily read-oriented.
+
+✓ V6 vision commands remain explicitly classified and controlled.
+
+✓ Future automation must preserve the existing confirmation/security architecture.
+
+---
+
 # CURRENT PROJECT STRUCTURE
 
 ```text
 JARVIS/
 
 │
+
 ├── .venv/
+
 ├── automation/
+
 ├── config/
+
 ├── core/
+
 ├── data/
+
 ├── logs/
+
 ├── memory/
+
 ├── security/
+
 ├── tests/
+
 ├── tools/
+
 ├── ui/
+
 ├── voice/
+
 │
+
 ├── kokoro_test/
+
 │
+
 ├── __pycache__/
+
 │
+
 ├── .env
+
 ├── .gitignore
+
 ├── main.py
+
+├── main_v7.py
+
 ├── main_v2_backup.py
+
 ├── PROJECT_STATE.md
+
+├── start_jarvis.py
+
 ├── requirements.txt
+
 │
+
 ├── kokoro-v1.0.onnx
+
 ├── voices-v1.0.bin
+
 │
+
 ├── en_GB-alan-medium.onnx
+
 ├── en_GB-alan-medium.onnx.json
+
 ├── jarvis_voice.wav
+
 │
+
 ├── wakeword_class_test.py
+
 └── wakeword_test.py
+
 ```
 
 ---
 
 # CURRENT TOOLS STRUCTURE
 
-Important V3/V4/V5/V6 modules inside `tools/`:
+Important V3/V4/V5/V6/V7 modules inside `tools/` and `memory/`:
 
 ```text
 tools/
 
 ├── router.py
+
 ├── router_web.py
+
 ├── web_intelligence.py
+
 │
+
 ├── filesystem_control.py
+
 ├── filesystem2.py
+
 │
+
 ├── app_control.py
+
 ├── system_control.py
+
 ├── window_control.py
+
 │
+
 ├── vision_capture.py
+
 ├── vision_ocr.py
+
 ├── vision_analyzer.py
+
 ├── window_control_v6.py
+
 ├── vision_router.py
+
 ├── browser_control_v6.py
+
 └── vision_command_layer.py
+
+
+memory/
+
+├── memory_commands.py
+
+├── memory_context.py
+
+├── memory_controller.py
+
+├── memory_manager.py
+
+├── memory_ollama.py
+
+├── memory_retrieval.py
+
+├── memory_search.py
+
+├── memory_store.py
+
+└── __init__.py
 ```
 
 ---
@@ -1611,16 +2637,43 @@ tools/
 tests/
 
 ├── test_vision_capture.py
+
 ├── test_vision_ocr.py
+
 ├── test_vision_analyzer.py
+
 ├── test_window_control_v6.py
+
 ├── test_browser_control_v6.py
+
 ├── test_vision_router.py
+
 ├── test_vision_command_layer.py
-└── test_v6_e2e.py
+
+├── test_v6_e2e.py
+
+│
+
+├── test_memory_commands.py
+
+├── test_memory_context.py
+
+├── test_memory_manager.py
+
+├── test_memory_ollama.py
+
+├── test_memory_retrieval.py
+
+├── test_memory_search.py
+
+├── test_memory_store.py
+
+├── test_v7_6_ollama_e2e.py
+
+└── test_v7_12_e2e.py
 ```
 
-Existing V1–V5 tests remain part of the project where applicable.
+Existing V1–V6 tests remain part of the project where applicable.
 
 ---
 
@@ -1628,7 +2681,7 @@ Existing V1–V5 tests remain part of the project where applicable.
 
 ## `main.py`
 
-Responsible for the overall JARVIS runtime:
+Responsible for the overall V1–V6 JARVIS runtime:
 
 ```text
 Wake Word
@@ -1652,11 +2705,17 @@ Vision Command Layer / Web Router / Command Router
         │
 
         ├── V6 Computer Vision
+
         ├── V5 Web Intelligence
+
         ├── V4 Filesystem2
+
         ├── Existing V4 Filesystem
+
         ├── Application Control
+
         ├── System Control
+
         └── Window Control
 
     ↓
@@ -1686,9 +2745,77 @@ goodbye → Wake Word
 exit → Shutdown
 ```
 
-`main.py` should not become a large monolithic file.
+`main.py` remains the established V1–V6 runtime and should not become a large monolithic file.
 
-New major functionality should be implemented in dedicated modules and connected to the runtime.
+New major functionality should be implemented in dedicated modules and connected to the appropriate runtime.
+
+---
+
+## `main_v7.py`
+
+Responsible for the V7 runtime:
+
+```text
+Wake Word
+
+    ↓
+
+Activation
+
+    ↓
+
+Conversation
+
+    ↓
+
+Memory / V1–V6 Command Detection
+
+    ↓
+
+Memory Controller / Vision / Web / Filesystem / Laptop Tools
+
+    ↓
+
+Relevant Result
+
+    ↓
+
+Ollama AI when required
+
+    ↓
+
+Kokoro Text-to-Speech
+
+    ↓
+
+Conversation continues
+
+    ↓
+
+goodbye → Wake Word
+
+exit → Shutdown
+```
+
+`main_v7.py` preserves V1–V6 behavior while integrating the V7 memory system.
+
+`main_v7.py` is a large established V7 runtime and is officially frozen with V7.
+
+---
+
+## `start_jarvis.py`
+
+Responsible for the permanent JARVIS startup entry point.
+
+Normal daily startup:
+
+```powershell
+python start_jarvis.py
+```
+
+The launcher starts the currently authoritative JARVIS runtime.
+
+Previous version runtimes and launchers should remain preserved for rollback/testing.
 
 ---
 
@@ -1697,10 +2824,15 @@ New major functionality should be implemented in dedicated modules and connected
 Responsible for:
 
 * Wake-word model
+
 * Microphone stream
+
 * `Hey Jarvis` detection
+
 * Detection threshold
+
 * Cooldown
+
 * Model reset
 
 ---
@@ -1710,7 +2842,9 @@ Responsible for:
 Responsible for:
 
 * Microphone input
+
 * Speech recognition
+
 * Speech → text
 
 ---
@@ -1720,8 +2854,11 @@ Responsible for:
 Responsible for:
 
 * Text → speech
+
 * Kokoro local TTS
+
 * `am_adam` JARVIS voice
+
 * Offline voice generation
 
 ---
@@ -1731,8 +2868,11 @@ Responsible for:
 Responsible for:
 
 * Core JARVIS AI interaction
+
 * AI response generation
+
 * Conversational responses
+
 * Ollama integration
 
 Current local model:
@@ -1748,13 +2888,21 @@ llama3.2:3b
 Responsible for:
 
 * Existing V3/V4 command routing
+
 * Application commands
+
 * System commands
+
 * Window commands
+
 * Filesystem commands
+
 * Filesystem2 commands
+
 * Volume command parsing
+
 * Tool command detection
+
 * Connecting commands to existing tools
 
 This is an established large working file and should not be unnecessarily expanded or rewritten.
@@ -1766,12 +2914,19 @@ This is an established large working file and should not be unnecessarily expand
 Responsible for:
 
 * Web command detection
+
 * Current-information queries
+
 * Explicit web searches
+
 * Search-result selection
+
 * Webpage reading
+
 * Webpage fallback
+
 * Local Ollama source analysis
+
 * Web-specific error handling
 
 ---
@@ -1781,11 +2936,17 @@ Responsible for:
 Responsible for:
 
 * Web searching
+
 * Webpage fetching
+
 * Compression handling
+
 * HTML cleanup
+
 * Main-content extraction
+
 * Search-result formatting
+
 * Webpage reading
 
 ---
@@ -1795,15 +2956,25 @@ Responsible for:
 Responsible for established V4 functionality:
 
 * File search
+
 * Folder search
+
 * Natural search
+
 * File inspection
+
 * File reading
+
 * PDF reading
+
 * DOCX reading
+
 * File opening/closing
+
 * Folder opening/closing
+
 * File creation
+
 * Folder creation
 
 This file remains the established V4 filesystem foundation.
@@ -1815,12 +2986,19 @@ This file remains the established V4 filesystem foundation.
 Responsible for V4 filesystem modification operations:
 
 * Rename file
+
 * Rename folder
+
 * Delete file
+
 * Delete folder
+
 * Copy file
+
 * Copy folder
+
 * Move file
+
 * Move folder
 
 ---
@@ -1830,9 +3008,13 @@ Responsible for V4 filesystem modification operations:
 Responsible for:
 
 * Approved application launching
+
 * Approved application closing
+
 * Windows utility launching
+
 * Safe application termination
+
 * Last-opened application support
 
 ---
@@ -1842,7 +3024,9 @@ Responsible for:
 Responsible for:
 
 * Volume control
+
 * Mute/unmute
+
 * Computer locking
 
 ---
@@ -1852,9 +3036,13 @@ Responsible for:
 Responsible for:
 
 * Minimize
+
 * Maximize
+
 * Restore
+
 * Show desktop
+
 * Window switching
 
 ---
@@ -1864,9 +3052,13 @@ Responsible for:
 Responsible for:
 
 * Command security classification
+
 * Safe commands
+
 * Risky commands
+
 * Blocked commands
+
 * Confirmation handling
 
 ---
@@ -1878,7 +3070,9 @@ Responsible for:
 Responsible for:
 
 * Screen capture
+
 * Screenshot creation
+
 * Screenshot storage
 
 ---
@@ -1888,7 +3082,9 @@ Responsible for:
 Responsible for:
 
 * OCR
+
 * Screen text extraction
+
 * OCR result handling
 
 ---
@@ -1898,11 +3094,17 @@ Responsible for:
 Responsible for:
 
 * Structured screen analysis
+
 * OCR element detection
+
 * Coordinates
+
 * Dimensions
+
 * Confidence
+
 * Screen resolution
+
 * Clean OCR elements
 
 ---
@@ -1912,12 +3114,19 @@ Responsible for:
 Responsible for:
 
 * Active window detection
+
 * Window title
+
 * Process name
+
 * Process ID
+
 * Process path
+
 * Window class
+
 * Window state
+
 * Window geometry
 
 ---
@@ -1927,9 +3136,13 @@ Responsible for:
 Responsible for:
 
 * Vision tool coordination
+
 * Screen capture
+
 * Screen analysis
+
 * Active-window detection
+
 * Unified vision result
 
 ---
@@ -1939,15 +3152,25 @@ Responsible for:
 Responsible for:
 
 * Browser detection
+
 * URL validation
+
 * URL normalization
+
 * Opening websites
+
 * Google search
+
 * New tab
+
 * Refresh
+
 * Back
+
 * Forward
+
 * Browser keyboard control
+
 * Browser status
 
 ---
@@ -1957,29 +3180,198 @@ Responsible for:
 Responsible for:
 
 * V6 command classification
+
 * V6 command detection
+
 * Screen commands
+
 * Active-window commands
+
 * OCR commands
+
 * Browser commands
+
 * Search commands
+
 * Browser navigation commands
+
 * Safe unknown-command handling
+
 * Vision command execution
 
 Important architectural rule:
 
 ```text
 classify()
+
     ↓
+
 Determine action
+
     ↓
+
 execute()
+
     ↓
+
 Perform action once
 ```
 
 The classifier must remain side-effect free.
+
+---
+
+# V7 IMPORTANT FILES
+
+## `memory/memory_store.py`
+
+Responsible for:
+
+* SQLite persistent memory storage
+
+* Database initialization
+
+* Memory table creation
+
+* Memory insertion
+
+* Memory retrieval
+
+* Memory updating
+
+* Memory deletion
+
+* Memory counting
+
+* Injectable test database path
+
+---
+
+## `memory/memory_manager.py`
+
+Responsible for:
+
+* Memory CRUD operations
+
+* Memory validation
+
+* Memory save
+
+* Memory retrieval
+
+* Memory update
+
+* Memory deletion
+
+* Memory counting
+
+---
+
+## `memory/memory_search.py`
+
+Responsible for:
+
+* Memory search
+
+* SQLite search
+
+* Search result limiting
+
+* Search result handling
+
+---
+
+## `memory/memory_retrieval.py`
+
+Responsible for:
+
+* Deterministic memory reranking
+
+* Relevance scoring
+
+* Exact query matching
+
+* Meaningful phrase matching
+
+* Meaningful term matching
+
+* Category matching
+
+* Adjacent-word matching
+
+* Retrieval result limiting
+
+---
+
+## `memory/memory_context.py`
+
+Responsible for:
+
+* Relevant memory context generation
+
+* Context limiting
+
+* Relevance thresholds
+
+* Deterministic context generation
+
+---
+
+## `memory/memory_commands.py`
+
+Responsible for:
+
+* Natural-language memory command detection
+
+* Save commands
+
+* Search commands
+
+* List commands
+
+* Count commands
+
+* Update commands
+
+* Delete commands
+
+* Natural memory questions
+
+* Missing memory number handling
+
+---
+
+## `memory/memory_controller.py`
+
+Responsible for:
+
+* Memory operation orchestration
+
+* Memory retrieval
+
+* Memory context
+
+* Memory count
+
+* Memory save
+
+* Memory update
+
+* Memory deletion
+
+* Confirmation state
+
+---
+
+## `memory/memory_ollama.py`
+
+Responsible for:
+
+* Local Ollama memory-context integration
+
+* Supplying relevant memory context to Ollama
+
+* Local AI memory reasoning
 
 ---
 
@@ -2023,7 +3415,7 @@ Instead:
 
 5. Avoid unnecessary refactoring.
 
-This rule applies to V5, V6 and all future versions.
+This rule applies to V5, V6, V7 and all future versions.
 
 ---
 
@@ -2033,9 +3425,9 @@ Complete and test the current version before moving to the next major version.
 
 Do not restart completed versions without a debugging reason.
 
-V1–V6 are completed.
+V1–V7 are completed.
 
-The next development phase is V7.
+The next development phase is V8.
 
 ---
 
@@ -2051,13 +3443,21 @@ Web intelligence should remain primarily read-oriented and should not automatica
 
 Vision commands should remain explicitly classified and controlled.
 
+Memory deletion must remain confirmation controlled.
+
+Memory data must remain locally stored and user controlled.
+
+Future automation must preserve confirmation and security controls.
+
 ---
 
 ## 6. Backward compatibility
 
 New versions must preserve working functionality from previous versions unless there is a clear architectural reason to change it.
 
-V7 must preserve V1–V6 behavior.
+V7 preserves V1–V6 behavior.
+
+V8 must preserve V1–V7 behavior.
 
 ---
 
@@ -2065,11 +3465,24 @@ V7 must preserve V1–V6 behavior.
 
 Every major feature must be manually tested and, where practical, automated tests should be added.
 
-V6 has passed final End-to-End testing with:
+V6 passed final End-to-End testing with:
 
 ```text
 11 PASSED
+
 0 FAILED
+```
+
+V7 passed the complete project test suite with:
+
+```text
+96 PASSED
+
+0 FAILED
+
+0 ERRORS
+
+13 WARNINGS
 ```
 
 ---
@@ -2101,9 +3514,13 @@ Do not reconstruct large working files unnecessarily.
 When modifying an established file:
 
 * Preserve existing functionality.
+
 * Make targeted changes.
+
 * Do not remove unrelated code.
+
 * Do not replace a large file with a shortened reconstruction.
+
 * Prefer adding new modules when appropriate.
 
 ---
@@ -2113,15 +3530,20 @@ When modifying an established file:
 Once a major version has passed its final End-to-End validation and has been frozen:
 
 * Do not modify stable modules unnecessarily.
+
 * Do not refactor working code without a real requirement.
+
 * New versions should build on the existing interfaces.
+
 * Fix frozen-version code only when a real regression or integration bug is discovered.
 
-V6 is currently frozen under this rule.
+V6 is frozen under this rule.
+
+V7 is now also frozen under this rule.
 
 ---
 
-# V6 FINAL POSITION
+# V7 FINAL POSITION
 
 ```text
 Phase 0  ████████████████████ COMPLETE
@@ -2136,11 +3558,11 @@ V4       ████████████████████ COMPLETE
 
 V5       ████████████████████ COMPLETE
 
-V6       ████████████████████ COMPLETE
+V6       ████████████████████ COMPLETE — FROZEN
 
-V7       ░░░░░░░░░░░░░░░░░░░░ NEXT
+V7       ████████████████████ COMPLETE — FROZEN
 
-V8       ░░░░░░░░░░░░░░░░░░░░
+V8       ░░░░░░░░░░░░░░░░░░░░ NEXT
 
 V9       ░░░░░░░░░░░░░░░░░░░░
 
@@ -2153,57 +3575,63 @@ V12      ░░░░░░░░░░░░░░░░░░░░
 
 ---
 
-# V6 FINAL SUMMARY
+# V7 FINAL SUMMARY
 
-V6 — Computer Vision is complete and frozen.
+V7 — Memory is complete and frozen.
 
 Completed:
 
-✓ Screen capture
+✓ Memory architecture
 
-✓ Screenshot storage
+✓ Local SQLite memory storage
 
-✓ OCR
+✓ Memory save
 
-✓ Structured screen analysis
+✓ Memory retrieval
 
-✓ Active-window detection
+✓ Memory search
 
-✓ Browser control
+✓ Memory update
 
-✓ Browser navigation
+✓ Memory deletion
 
-✓ Google opening
+✓ Memory count
 
-✓ Web search through browser control
+✓ Deterministic memory retrieval
 
-✓ Screen text reading
+✓ Relevance scoring
 
-✓ Vision command classification
+✓ Meaningful phrase matching
 
-✓ Vision command execution
+✓ Session memory context
 
-✓ Pure command classification
+✓ Persistent memory context
 
-✓ V6 main runtime integration
+✓ Local Ollama memory integration
 
-✓ Wake-word integration
+✓ Voice-controlled memory operations
 
-✓ Kokoro integration
+✓ Memory confirmation handling
 
-✓ V1–V5 backward compatibility
+✓ V7.6 real Ollama End-to-End testing
 
-✓ V6 safety handling
+✓ V7.12 memory lifecycle End-to-End testing
 
-✓ V6.1–V6.8 feature validation
+✓ V7 full test suite
 
-✓ V6.9 End-to-End testing
+✓ V6 regression validation
 
-✓ V6.10 final freeze
+✓ Tesseract OCR regression validation
 
-**Final V6 E2E result: 11 PASSED / 0 FAILED.**
+✓ V7.14 final freeze
 
-V6 is officially complete and frozen.
+**Final V7 full test result: 96 PASSED / 0 FAILED / 0 ERRORS.**
+
+**V7.6 Ollama E2E result: 3 PASSED.**
+
+**V7.12 lifecycle E2E result: 1 PASSED.**
+
+V7 is officially complete and frozen.
 
 ---
 
@@ -2224,11 +3652,13 @@ V5       COMPLETE
 
 V6       COMPLETE — FROZEN
 
-V7       NEXT
+V7       COMPLETE — FROZEN
+
+V8       NEXT
 ```
 
-**Next development session: Begin V7 — Memory.**
+**Next development session: Begin V8 — Personal Automation.**
 
-Do not restart V1/V2/V3/V4/V5/V6 unless debugging an existing feature.
+Do not restart V1/V2/V3/V4/V5/V6/V7 unless debugging an existing feature.
 
-V7 should be developed incrementally while preserving the frozen V6 Computer Vision foundation.
+V8 should be developed incrementally while preserving the frozen V6 Computer Vision foundation and the frozen V7 Memory foundation.

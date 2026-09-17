@@ -1,0 +1,10 @@
+[
+    {
+        "automation_name": "V8 Scheduler Integration Test",
+        "schedule_type": "DAILY",
+        "run_time": "15:22:51.380470",
+        "run_date": null,
+        "weekdays": [],
+        "enabled": true
+    }
+]
