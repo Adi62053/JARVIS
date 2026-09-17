@@ -11,8 +11,11 @@ Normal startup command:
     python start_jarvis.py
 """
 
+import sys
+
 from main_v8 import main
 
 
 if __name__ == "__main__":
-    main()
+    command = " ".join(sys.argv[1:]).strip()
+    main(command if command else None)
