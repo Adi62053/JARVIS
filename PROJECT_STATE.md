@@ -2,11 +2,11 @@
 
 ## Current Version
 
-**V7 — MEMORY**
+**V8 — PERSONAL AUTOMATION + UNIFIED V1–V8 RUNTIME**
 
 ## Current Status
 
-**V7 COMPLETE AND FROZEN**
+**V8 COMPLETE AND FROZEN — V1–V8 UNIFIED RUNTIME COMPLETE AND TESTED**
 
 JARVIS is now a voice-controlled Windows laptop assistant with:
 
@@ -52,7 +52,27 @@ JARVIS is now a voice-controlled Windows laptop assistant with:
 
 * Local offline Kokoro TTS voice
 
-V7 preserves all working V1, V2, V3, V4, V5 and V6 capabilities and adds controlled persistent Memory capabilities.
+* Personal automation
+
+* Reusable multi-step workflows
+
+* Automation creation and management
+
+* Automation scheduling
+
+* Automation conditions
+
+* Automation failure handling
+
+* Automation security gates and confirmation
+
+* Automation voice integration
+
+* Automation memory integration
+
+* Unified V1–V8 conversational runtime
+
+V8 preserves all working V1, V2, V3, V4, V5, V6 and V7 capabilities and adds controlled Personal Automation capabilities.
 
 **V7 final full test suite: 96 PASSED / 0 FAILED / 0 ERRORS.**
 
@@ -62,25 +82,29 @@ V7 preserves all working V1, V2, V3, V4, V5 and V6 capabilities and adds control
 
 **V7 is officially frozen.**
 
+**V8 is officially frozen.**
+
+**V1–V8 unified runtime integration is complete and tested.**
+
 ---
 
 # PROJECT ROADMAP
 
-| Version | Name                | Primary Outcome                                                                            |
-| ------- | ------------------- | ------------------------------------------------------------------------------------------ |
-| Phase 0 | Foundation          | Project setup, environment, architecture, configuration, logging and development workflow. |
-| V1      | Basic JARVIS        | Voice → AI → Voice conversation.                                                           |
-| V2      | Wake Word           | Hands-free activation and conversation sessions.                                           |
-| V3      | Laptop Control      | Controlled application and Windows operations.                                             |
-| V4      | Files & Folders     | Search, create, inspect, rename, copy, move and delete files/folders.                      |
-| V5      | Web Intelligence    | Search, retrieve and use online information safely.                                        |
-| V6      | Computer Vision     | Screen understanding and visual interaction.                                               |
-| **V7**  | **Memory**          | **Persistent, user-controlled memory and context.**                                        |
-| V8      | Personal Automation | Reusable multi-action workflows.                                                           |
-| V9      | Security System     | Permissions, confirmations, authentication and sensitive-action controls.                  |
-| V10     | Background Mode     | Start with Windows and wait for wake word.                                                 |
-| V11     | JARVIS GUI          | Dedicated visual interface and system dashboard.                                           |
-| V12     | Advanced Agent      | Goal-based planning, tool use, verification and multi-step execution.                      |
+| Version | Name                    | Primary Outcome                                                                            |
+| ------- | ----------------------- | ------------------------------------------------------------------------------------------ |
+| Phase 0 | Foundation              | Project setup, environment, architecture, configuration, logging and development workflow. |
+| V1      | Basic JARVIS            | Voice → AI → Voice conversation.                                                           |
+| V2      | Wake Word               | Hands-free activation and conversation sessions.                                           |
+| V3      | Laptop Control          | Controlled application and Windows operations.                                             |
+| V4      | Files & Folders         | Search, create, inspect, rename, copy, move and delete files/folders.                      |
+| V5      | Web Intelligence        | Search, retrieve and use online information safely.                                        |
+| V6      | Computer Vision         | Screen understanding and visual interaction.                                               |
+| V7      | Memory                  | Persistent, user-controlled memory and context.                                            |
+| **V8**  | **Personal Automation** | **Reusable multi-action workflows, scheduling, conditions and controlled execution.**      |
+| V9      | Security System         | Permissions, confirmations, authentication and sensitive-action controls.                  |
+| V10     | Background Mode         | Start with Windows and wait for wake word.                                                 |
+| V11     | JARVIS GUI              | Dedicated visual interface and system dashboard.                                           |
+| V12     | Advanced Agent          | Goal-based planning, tool use, verification and multi-step execution.                      |
 
 ---
 
@@ -1517,7 +1541,7 @@ Screen Analyzer
 Structured Vision Result
       │
       ▼
-  JARVIS Result
+ JARVIS Result
       │
       ▼
 ┌─────────────────────┐
@@ -1855,11 +1879,11 @@ Important scoring behavior includes:
 ```text
 Exact full query       +10
 
-Meaningful phrase      +8
+Meaningful phrase       +8
 
-Meaningful term        +3
+Meaningful term         +3
 
-Category match         +2
+Category match          +2
 ```
 
 The retrieval system includes:
@@ -2323,8 +2347,8 @@ Future versions should integrate with the existing V7 interfaces rather than rec
                              │
                              ▼
                     ┌─────────────────┐
-                    │    Listener     │
-                    │  Speech → Text  │
+                    │  Listener       │
+                    │ Speech → Text   │
                     └────────┬────────┘
                              │
                              ▼
@@ -2334,26 +2358,26 @@ Future versions should integrate with the existing V7 interfaces rather than rec
                              │
                        Intent / Command
                              │
-          ┌──────────────────┼──────────────────┐
-          │                  │                  │
-          ▼                  ▼                  ▼
-   Memory Commands     Existing V1–V6     Normal AI
-          │                Routing          Conversation
-          ▼                  │                  │
-   Memory Controller         │                  │
-          │                  │                  │
-     ┌────┼────┐             │                  │
-     │    │    │             │                  │
-     ▼    ▼    ▼             │                  │
-   Store Search Context      │                  │
-     │    │    │             │                  │
-     └────┼────┘             │                  │
-          │                  │                  │
-          ▼                  ▼                  ▼
-   Memory Retrieval    V6 / V5 / V4 / V3    Ollama
-          │            Existing Tools          │
-          │                  │                  │
-          └──────────────────┼──────────────────┘
+         ┌───────────────────┼───────────────────┐
+         │                   │                   │
+         ▼                   ▼                   ▼
+  Memory Commands      Existing V1–V6       Normal AI
+         │               Routing            Conversation
+         ▼                   │                   │
+  Memory Controller          │                   │
+         │                   │                   │
+    ┌────┼────┐              │                   │
+    │    │    │              │                   │
+    ▼    ▼    ▼              │                   │
+  Store Search Context       │                   │
+    │    │    │              │                   │
+    └────┼────┘              │                   │
+         │                   │                   │
+         ▼                   ▼                   ▼
+ Memory Retrieval     V6 / V5 / V4 / V3     Ollama
+                     Existing Tools
+         │                   │                   │
+         └───────────────────┼───────────────────┘
                              │
                              ▼
                    Context / JARVIS Result
@@ -2483,6 +2507,1283 @@ V7 preserves the project's safety architecture.
 
 ---
 
+# V8 — PERSONAL AUTOMATION
+
+## V8 Status
+
+**✓ COMPLETE — FROZEN**
+
+V8 adds Personal Automation to JARVIS without replacing the frozen V7 Memory runtime.
+
+V8 provides:
+
+✓ Local persistent automation definitions
+
+✓ Automation creation
+
+✓ Automation management
+
+✓ Reusable multi-step workflows
+
+✓ Action system
+
+✓ Execution engine
+
+✓ Scheduling
+
+✓ Schedule run state
+
+✓ Conditions
+
+✓ Failure handling
+
+✓ STOP / CONTINUE failure policies
+
+✓ Automation security levels
+
+✓ Dangerous-step confirmation
+
+✓ Voice integration
+
+✓ Memory integration
+
+✓ Full integration
+
+✓ Unit testing
+
+✓ Regression testing
+
+✓ Final verification
+
+✓ Final freeze
+
+---
+
+## V8.1 — Architecture
+
+✓ Modular automation subsystem
+
+✓ Existing JARVIS architecture preserved
+
+✓ Automation logic separated from the main runtime
+
+✓ Dedicated automation modules
+
+---
+
+## V8.2 — Data Model
+
+✓ Automation model
+
+✓ Automation step model
+
+✓ Action definitions
+
+✓ Security levels
+
+✓ Workflow representation
+
+---
+
+## V8.3 — Local Storage
+
+✓ Local automation storage
+
+✓ Persistent automation definitions
+
+✓ Automation loading
+
+✓ Automation lookup
+
+✓ Automation state management
+
+---
+
+## V8.4 — Action System
+
+✓ Controlled automation actions
+
+✓ Explicit action definitions
+
+✓ Existing JARVIS tools reused where appropriate
+
+✓ No unrestricted shell execution
+
+---
+
+## V8.5 — Execution Engine
+
+✓ Automation executor
+
+✓ Controlled step execution
+
+✓ Step-by-step workflow execution
+
+✓ Structured execution results
+
+---
+
+## V8.6 — Multi-Step Workflows
+
+✓ Multiple actions in one automation
+
+✓ Ordered workflow execution
+
+✓ Workflow runner
+
+✓ Step result collection
+
+✓ Controlled execution flow
+
+---
+
+## V8.7 — Automation Creation
+
+✓ Create automation commands
+
+✓ Automation definition validation
+
+✓ Local persistence
+
+✓ Voice-compatible automation creation
+
+---
+
+## V8.8 — Automation Management
+
+✓ List automations
+
+✓ Show automation
+
+✓ Enable automation
+
+✓ Disable automation
+
+✓ Delete automation
+
+✓ Add step
+
+✓ Remove step
+
+✓ Add condition
+
+✓ Remove condition
+
+✓ Show conditions
+
+---
+
+## V8.9 — Scheduling
+
+Scheduling modules:
+
+```text
+automation/schedule_model.py
+
+automation/schedule_storage.py
+
+automation/schedule_manager.py
+
+automation/scheduler_engine.py
+
+automation/schedule_run_state.py
+
+automation/schedule_runner.py
+```
+
+✓ Schedule definitions
+
+✓ Schedule persistence
+
+✓ Schedule management
+
+✓ Scheduler engine
+
+✓ Run-state tracking
+
+✓ Scheduled automation execution
+
+---
+
+## V8.10 — Conditions
+
+Modules:
+
+```text
+automation/automation_conditions.py
+
+automation/condition_context.py
+```
+
+Supported conditions:
+
+```text
+ALWAYS
+
+VALUE_EQUALS
+
+VALUE_NOT_EQUALS
+```
+
+✓ Condition evaluation
+
+✓ Condition context
+
+✓ Conditions evaluated before workflow execution
+
+✓ Controlled conditional execution
+
+---
+
+## V8.11 — Failure Handling
+
+Modules:
+
+```text
+automation/automation_failure.py
+
+automation/failure_policy.py
+
+automation/automation_failure_handler.py
+
+automation/automation_failure_result.py
+```
+
+Failure policies:
+
+```text
+STOP
+
+CONTINUE
+```
+
+✓ Structured automation failures
+
+✓ Failure capture
+
+✓ STOP policy
+
+✓ CONTINUE policy
+
+✓ Structured failure results
+
+---
+
+## V8.12 — Security Integration
+
+Module:
+
+```text
+automation/automation_security_gate.py
+```
+
+Security levels:
+
+```text
+SAFE
+
+CAUTION
+
+DANGEROUS
+```
+
+✓ Dangerous actions require explicit confirmation
+
+✓ Existing AutomationConfirmation system reused
+
+✓ Security gate remains the authority
+
+✓ Confirmation is consumed only for the required automation step
+
+✓ No duplicate security gate added inside the executor
+
+✓ Automation security remains controlled
+
+---
+
+## V8.13 — Voice Integration
+
+Module:
+
+```text
+automation/automation_voice.py
+```
+
+V8 uses the existing local JARVIS voice architecture.
+
+Permanent voice:
+
+```text
+Kokoro / am_adam
+```
+
+✓ Local voice integration
+
+✓ Offline operation
+
+✓ Automation responses spoken through JARVIS voice
+
+✓ No paid TTS service introduced
+
+---
+
+## V8.14 — Memory Integration
+
+Modules:
+
+```text
+automation/automation_memory.py
+
+automation/memory_workflow_runner.py
+```
+
+V8 integrates with the frozen V7 MemoryController architecture.
+
+✓ Existing memory system reused
+
+✓ Memory context available to automation workflows
+
+✓ AutomationMemory wrapper
+
+✓ MemoryWorkflowRunner
+
+✓ Frozen V7 memory implementation preserved
+
+✓ No reconstruction of the V7 memory system
+
+---
+
+## V8.15 — Full Integration
+
+V8 integrates:
+
+```text
+Automation Manager
+
+        ↓
+
+Automation Command Handler
+
+        ↓
+
+Workflow Runner
+
+        ↓
+
+Automation Executor
+
+        ↓
+
+Security Gate
+
+        ↓
+
+Memory Context
+
+        ↓
+
+Automation Result
+
+        ↓
+
+JARVIS Voice
+```
+
+✓ Automation management integrated
+
+✓ Automation execution integrated
+
+✓ Scheduling integrated
+
+✓ Conditions integrated
+
+✓ Failure handling integrated
+
+✓ Security integrated
+
+✓ Voice integrated
+
+✓ Memory integrated
+
+---
+
+## V8.16 — Unit Testing
+
+✓ Automation modules tested
+
+✓ Action system tested
+
+✓ Executor tested
+
+✓ Workflow runner tested
+
+✓ Automation management tested
+
+✓ Scheduling tested
+
+✓ Conditions tested
+
+✓ Failure handling tested
+
+✓ Security gate tested
+
+✓ Voice integration tested
+
+✓ Memory integration tested
+
+---
+
+## V8.17 — Regression Testing
+
+✓ Existing V1–V7 architecture preserved
+
+✓ V7 Memory remains frozen
+
+✓ Existing computer vision remains preserved
+
+✓ Existing web intelligence remains preserved
+
+✓ Existing filesystem operations remain preserved
+
+✓ Existing laptop control remains preserved
+
+✓ Existing wake-word behavior remains preserved
+
+---
+
+## V8.18 — Final Verification
+
+✓ V8 modules imported successfully
+
+✓ Automation creation tested
+
+✓ Automation management tested
+
+✓ Automation execution tested
+
+✓ Scheduling system completed
+
+✓ Conditions completed
+
+✓ Failure handling completed
+
+✓ Security confirmation completed
+
+✓ Voice integration completed
+
+✓ Memory integration completed
+
+✓ Full V8 integration completed
+
+---
+
+## V8.19 — Final Freeze
+
+**✓ COMPLETE**
+
+V8 Personal Automation is officially frozen.
+
+Freeze commit:
+
+```text
+3553e1dc819382de54039d04002a9fac679a5b8f
+```
+
+Freeze tag:
+
+```text
+v8.19-freeze
+```
+
+The V8 working tree was verified clean at freeze.
+
+The permanent launcher was updated to V8 in the V8 freeze commit.
+
+The frozen V8 runtime is:
+
+```text
+main_v8.py
+```
+
+V8 must not be unnecessarily rewritten during later development.
+
+Future versions should build on the existing V8 interfaces.
+
+---
+
+# V8 IMPORTANT FILES
+
+```text
+automation/
+
+├── automation_actions.py
+
+├── automation_security.py
+
+├── automation_model.py
+
+├── automation_controller.py
+
+├── automation_storage.py
+
+├── automation_manager.py
+
+├── automation_dispatcher.py
+
+├── automation_executor.py
+
+├── automation_confirmation.py
+
+├── workflow_runner.py
+
+├── automation_app_handler.py
+
+├── automation_wait_handler.py
+
+├── automation_command_handler.py
+
+├── schedule_model.py
+
+├── schedule_storage.py
+
+├── schedule_manager.py
+
+├── scheduler_engine.py
+
+├── schedule_run_state.py
+
+├── schedule_runner.py
+
+├── automation_conditions.py
+
+├── condition_context.py
+
+├── automation_failure.py
+
+├── failure_policy.py
+
+├── automation_failure_handler.py
+
+├── automation_failure_result.py
+
+├── automation_security_gate.py
+
+├── automation_voice.py
+
+├── automation_memory.py
+
+└── memory_workflow_runner.py
+```
+
+---
+
+# V8 FINAL TEST STATUS
+
+```text
+V8.1  Architecture                 ✓ COMPLETE
+
+V8.2  Data Model                  ✓ COMPLETE
+
+V8.3  Local Storage               ✓ COMPLETE
+
+V8.4  Action System               ✓ COMPLETE
+
+V8.5  Execution Engine            ✓ COMPLETE
+
+V8.6  Multi-Step Workflows        ✓ COMPLETE
+
+V8.7  Automation Creation         ✓ COMPLETE
+
+V8.8  Automation Management       ✓ COMPLETE
+
+V8.9  Scheduling                  ✓ COMPLETE
+
+V8.10 Conditions                 ✓ COMPLETE
+
+V8.11 Failure Handling           ✓ COMPLETE
+
+V8.12 Security Integration       ✓ COMPLETE
+
+V8.13 Voice Integration          ✓ COMPLETE
+
+V8.14 Memory Integration         ✓ COMPLETE
+
+V8.15 Full Integration           ✓ COMPLETE
+
+V8.16 Unit Testing               ✓ COMPLETE
+
+V8.17 Regression Testing         ✓ COMPLETE
+
+V8.18 Final Verification         ✓ COMPLETE
+
+V8.19 Final Freeze               ✓ COMPLETE
+```
+
+**V8 is officially complete and frozen.**
+
+---
+
+# V8 IMPORTANT LIMITATIONS
+
+V8 is a controlled Personal Automation foundation.
+
+Current limitations:
+
+✓ Automations are explicitly defined.
+
+✓ Automation execution is controlled.
+
+✓ Scheduling is deterministic.
+
+✓ Conditions are deterministic.
+
+✓ Dangerous actions require confirmation.
+
+✓ Automation does not provide unrestricted autonomous computer control.
+
+✓ Automation does not expose unrestricted shell command execution.
+
+✓ Automation does not replace the existing V3–V7 safety architecture.
+
+✓ Automation uses existing JARVIS capabilities instead of bypassing them.
+
+These are design constraints and should not be considered V8 failures.
+
+---
+
+# V8 SAFETY
+
+✓ SAFE / CAUTION / DANGEROUS security levels
+
+✓ Dangerous automation steps require confirmation
+
+✓ AutomationSecurityGate remains the security authority
+
+✓ Existing V3 security remains active
+
+✓ Existing V4 filesystem safety remains active
+
+✓ V5 web intelligence remains controlled
+
+✓ V6 vision commands remain explicitly classified
+
+✓ V7 memory deletion remains confirmation controlled
+
+✓ No unrestricted shell execution
+
+✓ No duplicate security mechanism inside the executor
+
+---
+
+# V1–V8 UNIFIED RUNTIME INTEGRATION
+
+## Unified Status
+
+**✓ COMPLETE — TESTED**
+
+The V1–V8 unified runtime connects the established JARVIS conversational architecture into one runtime while preserving the frozen V7 and V8 version-specific implementations.
+
+The integration layer is separate from the frozen runtimes.
+
+Frozen runtimes remain:
+
+```text
+main_v7.py
+
+main_v8.py
+```
+
+The unified integration layer does not replace them.
+
+---
+
+## Unified Architecture
+
+```text
+                    JARVIS V1–V8
+                         │
+                         ▼
+                  Wake Word Detector
+                         │
+                         ▼
+                    Listener
+                  Speech → Text
+                         │
+                         ▼
+                 Unified Runtime
+                         │
+          ┌──────────────┼──────────────┐
+          │              │              │
+          ▼              ▼              ▼
+      V8 Automation   V7 Memory    Existing V1–V6
+          │              │          Tool Routing
+          │              │              │
+          └──────────────┼──────────────┘
+                         │
+                         ▼
+                  Normal AI / Ollama
+                         │
+                         ▼
+                  JARVIS Response
+                         │
+                         ▼
+                  Kokoro / am_adam
+                         │
+                         ▼
+                 Continue Conversation
+```
+
+The unified runtime preserves the old conversational model:
+
+✓ Wake word activation
+
+✓ Speech recognition
+
+✓ Existing V1–V6 command ownership
+
+✓ V7 memory command ownership
+
+✓ V8 automation command ownership
+
+✓ Normal conversation through Ollama
+
+✓ Existing Kokoro voice
+
+✓ Goodbye session behavior
+
+✓ Exit shutdown behavior
+
+---
+
+## Unified Integration Files
+
+### `jarvis_unified.py`
+
+Responsible for:
+
+✓ Unified integration entry point
+
+✓ V1–V8 dependency initialization
+
+✓ Existing V7-style runtime architecture
+
+✓ V8 initialization
+
+✓ Unified runtime orchestration
+
+The final file remains below the project module-size limit:
+
+```text
+801 lines
+```
+
+The main function was reduced to:
+
+```text
+96 lines
+```
+
+This preserves the project's 1000-line rule.
+
+---
+
+### `jarvis_unified_automation.py`
+
+Responsible for:
+
+✓ V8 automation command detection
+
+✓ Automation management delegation
+
+✓ Automation execution delegation
+
+✓ Existing AutomationCommandHandler reuse
+
+✓ Existing MemoryWorkflowRunner reuse
+
+Detection tested:
+
+```text
+RUN DETECTION: True
+
+CREATE DETECTION: True
+
+LIST DETECTION: True
+```
+
+---
+
+### `jarvis_unified_memory.py`
+
+Responsible for:
+
+✓ Unified memory formatting
+
+✓ Memory result handling
+
+✓ Frozen V7 MemoryController integration
+
+✓ Existing memory response handling
+
+Example validated responses include:
+
+```text
+Your favorite fruit is mango, sir.
+
+Your name is Aditya, sir.
+```
+
+---
+
+### `jarvis_unified_runtime.py`
+
+Responsible for:
+
+✓ Unified conversational runtime loop
+
+✓ Wake-word waiting
+
+✓ Conversation sessions
+
+✓ V1–V8 command routing
+
+✓ Normal Ollama fallback
+
+✓ Unified response handling
+
+✓ Shutdown handling
+
+The runtime function is:
+
+```text
+run_unified_runtime
+```
+
+Import validation passed successfully.
+
+---
+
+### `jarvis_unified_before_refactor.py`
+
+Preserved integration backup from before the unified runtime was split into smaller modules.
+
+It exists for development/reference purposes.
+
+---
+
+## Unified Runtime Refactoring
+
+The original unified runtime grew beyond the project's preferred module size.
+
+The integration was refactored without changing the frozen V7/V8 implementations.
+
+Final structure:
+
+```text
+jarvis_unified.py
+        │
+        ├── jarvis_unified_automation.py
+        │
+        ├── jarvis_unified_memory.py
+        │
+        └── jarvis_unified_runtime.py
+```
+
+Final validation:
+
+```text
+UNIFIED IMPORT: PASS
+
+JARVIS_UNIFIED LINES: 801
+
+MAIN LINES: 96
+
+MAIN EXTRACTION: PASS
+```
+
+---
+
+## Unified Import Validation
+
+```text
+ALL UNIFIED MODULE IMPORTS: PASS
+```
+
+Modules validated:
+
+```text
+jarvis_unified.py
+
+jarvis_unified_memory.py
+
+jarvis_unified_automation.py
+
+jarvis_unified_runtime.py
+```
+
+---
+
+## Unified Python Syntax Validation
+
+The unified integration files were compiled successfully with Python bytecode validation.
+
+```text
+py_compile: PASS
+```
+
+No compilation errors remained.
+
+---
+
+## Unified Live Startup
+
+Unified startup was tested successfully.
+
+Startup included:
+
+```text
+Initializing JARVIS voice...
+JARVIS voice initialized: Kokoro / am_adam
+Loading Hey Jarvis wake-word model...
+Wake-word detector ready.
+
+JARVIS V1-V8
+
+Persistent Memory: ACTIVE
+Computer Vision: ACTIVE
+Browser Control: ACTIVE
+Personal Automation: ACTIVE
+
+Waiting for 'Hey Jarvis'...
+```
+
+✓ Voice initialized
+
+✓ Wake-word initialized
+
+✓ Persistent memory loaded
+
+✓ Computer vision active
+
+✓ Browser control active
+
+✓ Personal automation active
+
+---
+
+## Unified Live Conversation
+
+The unified runtime successfully handled:
+
+```text
+Hey Jarvis
+
+        ↓
+
+Yes, sir.
+
+        ↓
+
+Speech Recognition
+
+        ↓
+
+Ollama Conversation
+
+        ↓
+
+Kokoro / am_adam
+```
+
+Validated conversational examples included:
+
+```text
+You: hu r u
+
+JARVIS: You are Aditya.
+
+You: tell me about yourself
+
+JARVIS: I'm JARVIS. I'm your personal AI assistant, created specifically for you, Aditya.
+```
+
+✓ Wake-word activation
+
+✓ Conversation session
+
+✓ Ollama response
+
+✓ Kokoro response
+
+✓ Conversation continuation
+
+✓ Clean shutdown
+
+---
+
+## Unified V5 Validation
+
+The unified runtime successfully preserved V5 Web Intelligence.
+
+Tested:
+
+```text
+what is the latest AI news
+```
+
+The runtime returned multiple current-information sources and used the existing web intelligence architecture.
+
+✓ V5 web routing preserved
+
+✓ Web search preserved
+
+✓ Current-information handling preserved
+
+✓ Local Ollama analysis preserved
+
+---
+
+## Unified V6 Validation
+
+The unified runtime successfully preserved V6 Computer Vision and Browser Control.
+
+Tested workflow:
+
+```text
+open a new tab for Google and search latest AI
+```
+
+Result:
+
+```text
+Opening Google in a new tab and searching the web for latest AI.
+```
+
+The command layer correctly classified the workflow as:
+
+```text
+search_web
+```
+
+with the query:
+
+```text
+latest AI
+```
+
+A short Google command was also validated:
+
+```text
+open new tab for Google
+```
+
+Result:
+
+```text
+Opening Google in a new tab.
+```
+
+✓ V6 browser control preserved
+
+✓ New-tab control preserved
+
+✓ Google opening preserved
+
+✓ Google search preserved
+
+✓ Combined browser workflow preserved
+
+---
+
+## Unified V7 Memory Validation
+
+The unified runtime successfully preserved V7 Memory.
+
+Tested:
+
+```text
+what do you remember about me
+```
+
+The runtime returned stored memories through the existing memory architecture.
+
+✓ Memory search preserved
+
+✓ Memory retrieval preserved
+
+✓ Persistent memory preserved
+
+✓ Memory context preserved
+
+✓ V7 MemoryController remains untouched
+
+---
+
+## Unified V8 Automation Validation
+
+The unified runtime successfully preserved V8 Personal Automation.
+
+Automation management was tested.
+
+Automation execution was tested with:
+
+```text
+Run automation test
+```
+
+Result:
+
+```text
+Automation 'test' completed.
+```
+
+✓ Automation detection
+
+✓ Automation management
+
+✓ Automation execution
+
+✓ Memory workflow integration
+
+✓ Kokoro response
+
+---
+
+## Unified Shutdown Validation
+
+The unified runtime successfully handled:
+
+```text
+goodbye
+```
+
+and:
+
+```text
+exit
+```
+
+✓ Goodbye ends the active conversation
+
+✓ Exit shuts down JARVIS
+
+✓ Final goodbye response spoken through Kokoro
+
+✓ Runtime terminates cleanly
+
+---
+
+## Unified Warning
+
+During wake-word initialization, the following warning may appear:
+
+```text
+Tried to import the tflite runtime, but it was not found.
+Trying to switching to onnxruntime instead, if appropriate models are available.
+```
+
+This is an expected environment fallback.
+
+The installed wake-word system uses the available ONNX runtime path.
+
+It is not considered a unified-runtime test failure.
+
+---
+
+# UNIFIED INTEGRATION FINAL TEST STATUS
+
+```text
+Unified module import                 ✓ PASS
+
+Unified py_compile                    ✓ PASS
+
+Unified refactoring / size rule       ✓ PASS
+
+Unified startup                       ✓ PASS
+
+Wake-word activation                  ✓ PASS
+
+Conversation session                  ✓ PASS
+
+Ollama conversation                   ✓ PASS
+
+Kokoro voice                          ✓ PASS
+
+V5 Web Intelligence                   ✓ PASS
+
+V6 Computer Vision                    ✓ PASS
+
+V6 Browser Control                    ✓ PASS
+
+V7 Persistent Memory                  ✓ PASS
+
+V8 Automation Management              ✓ PASS
+
+V8 Automation Execution               ✓ PASS
+
+Goodbye session handling              ✓ PASS
+
+Clean shutdown                        ✓ PASS
+```
+
+**V1–V8 unified integration is officially complete and tested.**
+
+---
+
+# UNIFIED INTEGRATION GIT STATUS
+
+V8 freeze remains preserved at:
+
+```text
+3553e1dc819382de54039d04002a9fac679a5b8f
+```
+
+Tag:
+
+```text
+v8.19-freeze
+```
+
+The later unified integration was committed separately.
+
+Unified integration commit:
+
+```text
+1f2edd9
+```
+
+Push result:
+
+```text
+20acb04..1f2edd9  main -> main
+```
+
+The unified integration commit did not modify the frozen V7/V8 version runtimes.
+
+---
+
+# UNIFIED IMPORTANT DESIGN RULE
+
+The unified runtime is an integration layer.
+
+It is not a replacement for:
+
+```text
+main.py
+
+main_v7.py
+
+main_v8.py
+```
+
+The frozen version runtimes remain preserved for rollback, reference and regression testing.
+
+The unified runtime should be the basis for future development only after the unified architecture has been explicitly approved.
+
+The permanent launcher should be changed to the unified runtime only after the unified runtime is fully approved.
+
+---
+
 # CURRENT PROJECT STRUCTURE
 
 ```text
@@ -2518,8 +3819,6 @@ JARVIS/
 
 ├── kokoro_test/
 
-│
-
 ├── __pycache__/
 
 │
@@ -2532,7 +3831,19 @@ JARVIS/
 
 ├── main_v7.py
 
+├── main_v8.py
+
 ├── main_v2_backup.py
+
+├── jarvis_unified.py
+
+├── jarvis_unified_automation.py
+
+├── jarvis_unified_memory.py
+
+├── jarvis_unified_runtime.py
+
+├── jarvis_unified_before_refactor.py
 
 ├── PROJECT_STATE.md
 
@@ -2559,7 +3870,6 @@ JARVIS/
 ├── wakeword_class_test.py
 
 └── wakeword_test.py
-
 ```
 
 ---
@@ -2606,7 +3916,6 @@ tools/
 ├── browser_control_v6.py
 
 └── vision_command_layer.py
-
 
 memory/
 
@@ -2681,7 +3990,7 @@ Existing V1–V6 tests remain part of the project where applicable.
 
 ## `main.py`
 
-Responsible for the overall V1–V6 JARVIS runtime:
+Responsible for the established V1–V6 JARVIS runtime:
 
 ```text
 Wake Word
@@ -2753,7 +4062,7 @@ New major functionality should be implemented in dedicated modules and connected
 
 ## `main_v7.py`
 
-Responsible for the V7 runtime:
+Responsible for the frozen V7 runtime:
 
 ```text
 Wake Word
@@ -2799,7 +4108,51 @@ exit → Shutdown
 
 `main_v7.py` preserves V1–V6 behavior while integrating the V7 memory system.
 
-`main_v7.py` is a large established V7 runtime and is officially frozen with V7.
+`main_v7.py` is officially frozen with V7 and should not be modified unnecessarily.
+
+---
+
+## `main_v8.py`
+
+Responsible for the frozen V8 Personal Automation runtime.
+
+V8 runtime connects:
+
+```text
+Automation Command Handler
+
+        ↓
+
+Automation Manager
+
+        ↓
+
+Workflow Runner
+
+        ↓
+
+Memory Workflow Runner
+
+        ↓
+
+Automation Executor
+
+        ↓
+
+Security Gate
+
+        ↓
+
+Automation Result
+
+        ↓
+
+Kokoro Voice
+```
+
+`main_v8.py` is officially frozen with V8.
+
+It should not be modified unnecessarily.
 
 ---
 
@@ -2813,253 +4166,103 @@ Normal daily startup:
 python start_jarvis.py
 ```
 
-The launcher starts the currently authoritative JARVIS runtime.
-
-Previous version runtimes and launchers should remain preserved for rollback/testing.
-
----
-
-## `voice/wakeword.py`
-
-Responsible for:
-
-* Wake-word model
-
-* Microphone stream
-
-* `Hey Jarvis` detection
-
-* Detection threshold
-
-* Cooldown
-
-* Model reset
-
----
-
-## `voice/listener.py`
-
-Responsible for:
-
-* Microphone input
-
-* Speech recognition
-
-* Speech → text
-
----
-
-## `voice/speaker.py`
-
-Responsible for:
-
-* Text → speech
-
-* Kokoro local TTS
-
-* `am_adam` JARVIS voice
-
-* Offline voice generation
-
----
-
-## `core/jarvis.py`
-
-Responsible for:
-
-* Core JARVIS AI interaction
-
-* AI response generation
-
-* Conversational responses
-
-* Ollama integration
-
-Current local model:
+The launcher currently points to the V8 runtime:
 
 ```text
-llama3.2:3b
+main_v8.py
 ```
 
+The unified runtime has been tested directly through:
+
+```text
+jarvis_unified.py
+```
+
+The permanent launcher should be changed to the unified runtime only after explicit approval.
+
+Previous version runtimes remain preserved for rollback/testing.
+
 ---
 
-## `tools/router.py`
+## `jarvis_unified.py`
 
 Responsible for:
 
-* Existing V3/V4 command routing
+* Unified V1–V8 integration
 
-* Application commands
+* V1–V8 dependency initialization
 
-* System commands
+* Unified orchestration
 
-* Window commands
+* V8 initialization
 
-* Filesystem commands
+* Connection to the existing V7-style conversational architecture
 
-* Filesystem2 commands
+Final size:
 
-* Volume command parsing
+```text
+801 lines
+```
 
-* Tool command detection
+Main function:
 
-* Connecting commands to existing tools
+```text
+96 lines
+```
 
-This is an established large working file and should not be unnecessarily expanded or rewritten.
+The file remains within the project's 1000-line rule.
 
 ---
 
-## `tools/router_web.py`
+## `jarvis_unified_automation.py`
 
 Responsible for:
 
-* Web command detection
+* V8 automation detection
 
-* Current-information queries
+* V8 automation management routing
 
-* Explicit web searches
+* V8 automation execution routing
 
-* Search-result selection
-
-* Webpage reading
-
-* Webpage fallback
-
-* Local Ollama source analysis
-
-* Web-specific error handling
+* Existing V8 module reuse
 
 ---
 
-## `tools/web_intelligence.py`
+## `jarvis_unified_memory.py`
 
 Responsible for:
 
-* Web searching
+* Unified memory result handling
 
-* Webpage fetching
+* Frozen V7 MemoryController integration
 
-* Compression handling
+* Memory response formatting
 
-* HTML cleanup
-
-* Main-content extraction
-
-* Search-result formatting
-
-* Webpage reading
+* Existing voice response integration
 
 ---
 
-## `tools/filesystem_control.py`
-
-Responsible for established V4 functionality:
-
-* File search
-
-* Folder search
-
-* Natural search
-
-* File inspection
-
-* File reading
-
-* PDF reading
-
-* DOCX reading
-
-* File opening/closing
-
-* Folder opening/closing
-
-* File creation
-
-* Folder creation
-
-This file remains the established V4 filesystem foundation.
-
----
-
-## `tools/filesystem2.py`
-
-Responsible for V4 filesystem modification operations:
-
-* Rename file
-
-* Rename folder
-
-* Delete file
-
-* Delete folder
-
-* Copy file
-
-* Copy folder
-
-* Move file
-
-* Move folder
-
----
-
-## `tools/app_control.py`
+## `jarvis_unified_runtime.py`
 
 Responsible for:
 
-* Approved application launching
+* Unified conversational runtime
 
-* Approved application closing
+* Wake-word waiting
 
-* Windows utility launching
+* Conversation sessions
 
-* Safe application termination
+* V1–V8 command routing
 
-* Last-opened application support
+* Ollama fallback
 
----
+* Unified shutdown behavior
 
-## `tools/system_control.py`
+Runtime function:
 
-Responsible for:
-
-* Volume control
-
-* Mute/unmute
-
-* Computer locking
-
----
-
-## `tools/window_control.py`
-
-Responsible for:
-
-* Minimize
-
-* Maximize
-
-* Restore
-
-* Show desktop
-
-* Window switching
-
----
-
-## `security/command_security.py`
-
-Responsible for:
-
-* Command security classification
-
-* Safe commands
-
-* Risky commands
-
-* Blocked commands
-
-* Confirmation handling
+```text
+run_unified_runtime
+```
 
 ---
 
@@ -3375,6 +4578,258 @@ Responsible for:
 
 ---
 
+# V8 IMPORTANT FILES
+
+## `automation/automation_model.py`
+
+Responsible for:
+
+* Automation definitions
+
+* Automation step representation
+
+* Automation security levels
+
+---
+
+## `automation/automation_storage.py`
+
+Responsible for:
+
+* Persistent automation storage
+
+* Automation loading
+
+* Automation saving
+
+* Automation lookup
+
+---
+
+## `automation/automation_manager.py`
+
+Responsible for:
+
+* Automation creation
+
+* Automation listing
+
+* Automation lookup
+
+* Automation enable/disable
+
+* Automation deletion
+
+* Automation step management
+
+---
+
+## `automation/automation_command_handler.py`
+
+Responsible for:
+
+* Automation command detection
+
+* Automation creation commands
+
+* Automation management commands
+
+* Automation step commands
+
+* Automation condition commands
+
+The command handler manages automations but does not directly execute them.
+
+---
+
+## `automation/automation_executor.py`
+
+Responsible for:
+
+* Controlled automation step execution
+
+* Action execution
+
+* Step results
+
+* Execution flow
+
+---
+
+## `automation/workflow_runner.py`
+
+Responsible for:
+
+* Multi-step workflow execution
+
+* Workflow ordering
+
+* Workflow result collection
+
+---
+
+## `automation/schedule_model.py`
+
+Responsible for:
+
+* Schedule definitions
+
+* Schedule configuration
+
+---
+
+## `automation/schedule_storage.py`
+
+Responsible for:
+
+* Schedule persistence
+
+* Schedule loading
+
+* Schedule saving
+
+---
+
+## `automation/schedule_manager.py`
+
+Responsible for:
+
+* Schedule management
+
+* Schedule lookup
+
+* Schedule state handling
+
+---
+
+## `automation/scheduler_engine.py`
+
+Responsible for:
+
+* Schedule evaluation
+
+* Trigger processing
+
+* Scheduled execution coordination
+
+---
+
+## `automation/schedule_runner.py`
+
+Responsible for:
+
+* Running scheduled automations
+
+* Connecting schedules to workflows
+
+---
+
+## `automation/automation_conditions.py`
+
+Responsible for:
+
+* Condition evaluation
+
+* Supported condition types
+
+---
+
+## `automation/condition_context.py`
+
+Responsible for:
+
+* Condition input context
+
+* Condition evaluation data
+
+---
+
+## `automation/automation_failure.py`
+
+Responsible for:
+
+* Structured automation failure representation
+
+---
+
+## `automation/failure_policy.py`
+
+Responsible for:
+
+* STOP policy
+
+* CONTINUE policy
+
+---
+
+## `automation/automation_failure_handler.py`
+
+Responsible for:
+
+* Failure capture
+
+* Failure processing
+
+---
+
+## `automation/automation_failure_result.py`
+
+Responsible for:
+
+* Structured automation failure results
+
+---
+
+## `automation/automation_security_gate.py`
+
+Responsible for:
+
+* SAFE actions
+
+* CAUTION actions
+
+* DANGEROUS actions
+
+* Confirmation enforcement
+
+The security gate remains the authority for dangerous automation actions.
+
+---
+
+## `automation/automation_voice.py`
+
+Responsible for:
+
+* Automation voice integration
+
+* Existing Kokoro voice reuse
+
+* Local/offline automation responses
+
+---
+
+## `automation/automation_memory.py`
+
+Responsible for:
+
+* Connecting V8 automation to the frozen V7 memory system
+
+* Memory context access
+
+---
+
+## `automation/memory_workflow_runner.py`
+
+Responsible for:
+
+* Obtaining memory context
+
+* Running workflows with memory context
+
+* Connecting automation execution to V7 Memory
+
+---
+
 # IMPORTANT DESIGN RULES
 
 ## 1. Free-first development
@@ -3415,7 +4870,9 @@ Instead:
 
 5. Avoid unnecessary refactoring.
 
-This rule applies to V5, V6, V7 and all future versions.
+This rule applies to V5, V6, V7, V8 and all future versions.
+
+The unified runtime was refactored using this rule.
 
 ---
 
@@ -3425,9 +4882,11 @@ Complete and test the current version before moving to the next major version.
 
 Do not restart completed versions without a debugging reason.
 
-V1–V7 are completed.
+V1–V8 are completed.
 
-The next development phase is V8.
+The V1–V8 unified runtime is completed and tested.
+
+The next development phase is V9.
 
 ---
 
@@ -3447,7 +4906,9 @@ Memory deletion must remain confirmation controlled.
 
 Memory data must remain locally stored and user controlled.
 
-Future automation must preserve confirmation and security controls.
+V8 automation preserves confirmation and security controls through the existing automation security gate.
+
+Future versions must preserve these controls.
 
 ---
 
@@ -3457,7 +4918,9 @@ New versions must preserve working functionality from previous versions unless t
 
 V7 preserves V1–V6 behavior.
 
-V8 must preserve V1–V7 behavior.
+V8 preserves V1–V7 behavior.
+
+The unified V1–V8 runtime preserves the established V7 conversational architecture while adding V8 as a specialized automation layer.
 
 ---
 
@@ -3483,6 +4946,30 @@ V7 passed the complete project test suite with:
 0 ERRORS
 
 13 WARNINGS
+```
+
+The V8 Personal Automation validation passed through V8.19 final verification and freeze.
+
+The unified V1–V8 runtime passed:
+
+```text
+ALL UNIFIED MODULE IMPORTS: PASS
+
+PY_COMPILE: PASS
+
+UNIFIED STARTUP: PASS
+
+WAKE-WORD CONVERSATION: PASS
+
+V5 WEB INTELLIGENCE: PASS
+
+V6 COMPUTER VISION / BROWSER: PASS
+
+V7 MEMORY: PASS
+
+V8 AUTOMATION: PASS
+
+CLEAN SHUTDOWN: PASS
 ```
 
 ---
@@ -3541,9 +5028,49 @@ V6 is frozen under this rule.
 
 V7 is now also frozen under this rule.
 
+V8 is now also frozen under this rule.
+
+The V1–V8 unified integration layer is separate from the frozen version runtimes and should not modify frozen V7/V8 implementations unnecessarily.
+
 ---
 
-# V7 FINAL POSITION
+# UNIFIED-RUNTIME RULE
+
+The unified V1–V8 runtime is an integration layer.
+
+It does not replace the frozen version-specific runtimes.
+
+Frozen runtimes:
+
+```text
+main_v7.py
+
+main_v8.py
+```
+
+The unified runtime reuses existing modules rather than duplicating V7/V8 functionality.
+
+The unified runtime must preserve:
+
+✓ Existing V1–V6 command routing
+
+✓ Existing V7 memory behavior
+
+✓ Existing V8 automation behavior
+
+✓ Existing safety controls
+
+✓ Existing Kokoro voice
+
+✓ Existing wake-word behavior
+
+✓ Existing goodbye/exit behavior
+
+The permanent launcher should only be changed to the unified runtime after explicit approval.
+
+---
+
+# V8 FINAL POSITION
 
 ```text
 Phase 0  ████████████████████ COMPLETE
@@ -3562,9 +5089,11 @@ V6       ████████████████████ COMPLETE �
 
 V7       ████████████████████ COMPLETE — FROZEN
 
-V8       ░░░░░░░░░░░░░░░░░░░░ NEXT
+V8       ████████████████████ COMPLETE — FROZEN
 
-V9       ░░░░░░░░░░░░░░░░░░░░
+UNIFIED  ████████████████████ V1–V8 COMPLETE — TESTED
+
+V9       ░░░░░░░░░░░░░░░░░░░░ NEXT
 
 V10      ░░░░░░░░░░░░░░░░░░░░
 
@@ -3575,63 +5104,143 @@ V12      ░░░░░░░░░░░░░░░░░░░░
 
 ---
 
-# V7 FINAL SUMMARY
+# V8 FINAL SUMMARY
 
-V7 — Memory is complete and frozen.
+V8 — Personal Automation is complete and frozen.
 
 Completed:
 
-✓ Memory architecture
+✓ Automation architecture
 
-✓ Local SQLite memory storage
+✓ Automation data model
 
-✓ Memory save
+✓ Local automation storage
 
-✓ Memory retrieval
+✓ Automation action system
 
-✓ Memory search
+✓ Automation execution engine
 
-✓ Memory update
+✓ Multi-step workflows
 
-✓ Memory deletion
+✓ Automation creation
 
-✓ Memory count
+✓ Automation management
 
-✓ Deterministic memory retrieval
+✓ Scheduling
 
-✓ Relevance scoring
+✓ Schedule state management
 
-✓ Meaningful phrase matching
+✓ Conditions
 
-✓ Session memory context
+✓ Condition context
 
-✓ Persistent memory context
+✓ Failure handling
 
-✓ Local Ollama memory integration
+✓ STOP / CONTINUE policies
 
-✓ Voice-controlled memory operations
+✓ Security integration
 
-✓ Memory confirmation handling
+✓ Dangerous-step confirmation
 
-✓ V7.6 real Ollama End-to-End testing
+✓ Voice integration
 
-✓ V7.12 memory lifecycle End-to-End testing
+✓ Memory integration
 
-✓ V7 full test suite
+✓ Full integration
 
-✓ V6 regression validation
+✓ Unit testing
 
-✓ Tesseract OCR regression validation
+✓ Regression testing
 
-✓ V7.14 final freeze
+✓ Final verification
 
-**Final V7 full test result: 96 PASSED / 0 FAILED / 0 ERRORS.**
+✓ V8.19 final freeze
 
-**V7.6 Ollama E2E result: 3 PASSED.**
+**V8 freeze commit:**
 
-**V7.12 lifecycle E2E result: 1 PASSED.**
+```text
+3553e1dc819382de54039d04002a9fac679a5b8f
+```
 
-V7 is officially complete and frozen.
+**V8 freeze tag:**
+
+```text
+v8.19-freeze
+```
+
+V8 is officially complete and frozen.
+
+---
+
+# V1–V8 UNIFIED FINAL SUMMARY
+
+The unified V1–V8 runtime is complete and tested.
+
+Completed:
+
+✓ Unified V1–V8 architecture
+
+✓ Existing V1–V6 routing preserved
+
+✓ V7 Memory integration preserved
+
+✓ V8 Personal Automation integration preserved
+
+✓ Unified wake-word activation
+
+✓ Unified conversation sessions
+
+✓ Unified Ollama fallback
+
+✓ Unified Kokoro voice
+
+✓ Unified V5 Web Intelligence
+
+✓ Unified V6 Computer Vision
+
+✓ Unified V6 Browser Control
+
+✓ Unified V7 Memory
+
+✓ Unified V8 Automation
+
+✓ Unified shutdown behavior
+
+✓ Modular runtime extraction
+
+✓ 1000-line rule preserved
+
+✓ Unified module imports passed
+
+✓ Python compilation passed
+
+✓ Live startup passed
+
+✓ Live conversation passed
+
+✓ V5 validation passed
+
+✓ V6 validation passed
+
+✓ V7 validation passed
+
+✓ V8 validation passed
+
+✓ Clean shutdown passed
+
+**Unified integration commit:**
+
+```text
+1f2edd9
+```
+
+**Push result:**
+
+```text
+20acb04..1f2edd9  main -> main
+```
+
+The unified integration is officially complete and tested.
 
 ---
 
@@ -3654,11 +5263,21 @@ V6       COMPLETE — FROZEN
 
 V7       COMPLETE — FROZEN
 
-V8       NEXT
+V8       COMPLETE — FROZEN
+
+V1–V8    UNIFIED COMPLETE — TESTED
+
+V9       NEXT
 ```
 
-**Next development session: Begin V8 — Personal Automation.**
+**Current development position: V9 — Security System.**
 
-Do not restart V1/V2/V3/V4/V5/V6/V7 unless debugging an existing feature.
+Do not restart V1/V2/V3/V4/V5/V6/V7/V8 unless debugging an existing feature or addressing a verified regression.
 
-V8 should be developed incrementally while preserving the frozen V6 Computer Vision foundation and the frozen V7 Memory foundation.
+The V1–V8 unified runtime is now complete and tested.
+
+The next major version is V9 — Security System.
+
+V9 should build on the unified V1–V8 runtime and the existing security architecture rather than rewriting previous versions.
+
+V9 should be developed incrementally while preserving the frozen V6 Computer Vision foundation, frozen V7 Memory foundation and frozen V8 Personal Automation foundation.
