@@ -184,6 +184,22 @@ def test_new_tab():
     print("[PASS] New tab command.")
 
 
+def test_google_search_workflow():
+    """Test combined Google new-tab and search workflow."""
+
+    layer = build_layer()
+
+    result = layer.execute(
+        "open a new tab for Google and search latest AI"
+    )
+
+    assert result["success"] is True
+    assert result["action"] == "search_web"
+    assert result["data"]["query"] == "latest AI"
+
+    print("[PASS] Google search workflow command.")
+
+
 def test_refresh():
     """Test refresh command."""
 
@@ -264,6 +280,7 @@ def main():
     test_open_google()
     test_search()
     test_new_tab()
+    test_google_search_workflow()
     test_refresh()
     test_back()
     test_forward()
@@ -279,3 +296,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

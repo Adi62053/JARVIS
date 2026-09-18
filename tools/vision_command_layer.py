@@ -39,6 +39,10 @@ class VisionCommandLayer:
     JARVIS V6.7 command interpreter for vision and browser actions.
     """
 
+    # ---------------------------------------------------------
+    # Screen commands
+    # ---------------------------------------------------------
+
     SCREEN_COMMANDS = (
         "what is on my screen",
         "what's on my screen",
@@ -51,6 +55,10 @@ class VisionCommandLayer:
         "screen analysis",
     )
 
+    # ---------------------------------------------------------
+    # Active window commands
+    # ---------------------------------------------------------
+
     ACTIVE_WINDOW_COMMANDS = (
         "what application is open",
         "what app is open",
@@ -62,6 +70,10 @@ class VisionCommandLayer:
         "active window",
     )
 
+    # ---------------------------------------------------------
+    # OCR commands
+    # ---------------------------------------------------------
+
     OCR_COMMANDS = (
         "what text is visible",
         "what text do you see",
@@ -71,6 +83,10 @@ class VisionCommandLayer:
         "show visible text",
     )
 
+    # ---------------------------------------------------------
+    # Google commands
+    # ---------------------------------------------------------
+
     GOOGLE_COMMANDS = (
         "open google",
         "open google.com",
@@ -78,11 +94,55 @@ class VisionCommandLayer:
         "go to google.com",
     )
 
+    # ---------------------------------------------------------
+    # New-tab commands
+    # ---------------------------------------------------------
+
     NEW_TAB_COMMANDS = (
         "open a new tab",
         "open new tab",
         "new tab",
     )
+
+    # ---------------------------------------------------------
+    # Google + new-tab workflow
+    #
+    # Examples:
+    #
+    #   open a new tab for Google
+    #   open new tab for Google
+    #
+    # These commands:
+    #
+    #   1. Open a new browser tab.
+    #   2. Open Google in that tab.
+    # ---------------------------------------------------------
+
+    GOOGLE_NEW_TAB_PREFIXES = (
+        "open a new tab for google",
+        "open new tab for google",
+    )
+
+    # ---------------------------------------------------------
+    # Combined Google search workflow
+    #
+    # Examples:
+    #
+    #   open a new tab for Google and search latest AI
+    #   open new tab for Google and search latest AI
+    #   open a new tab for Google and search for latest AI
+    # ---------------------------------------------------------
+
+    GOOGLE_SEARCH_WORKFLOW_PREFIXES = (
+        "open a new tab for google and search ",
+        "open new tab for google and search ",
+        "open a new tab for google and search for ",
+        "open new tab for google and search for ",
+    )
+
+    # ---------------------------------------------------------
+    # Browser navigation
+    # ---------------------------------------------------------
 
     REFRESH_COMMANDS = (
         "refresh",
@@ -108,6 +168,10 @@ class VisionCommandLayer:
         "forward",
     )
 
+    # ---------------------------------------------------------
+    # Search commands
+    # ---------------------------------------------------------
+
     SEARCH_PREFIXES = (
         "search google for ",
         "search the web for ",
@@ -115,7 +179,15 @@ class VisionCommandLayer:
         "search for ",
     )
 
-    def __init__(self, vision_router=None, browser_control=None):
+    # ---------------------------------------------------------
+    # Initialization
+    # ---------------------------------------------------------
+
+    def __init__(
+        self,
+        vision_router=None,
+        browser_control=None,
+    ):
         """
         Initialize the command layer.
 
@@ -132,9 +204,9 @@ class VisionCommandLayer:
 
         self.last_result = None
 
-    # ---------------------------------------------------------
+    # =========================================================
     # Utility
-    # ---------------------------------------------------------
+    # =========================================================
 
     @staticmethod
     def _normalize_command(command):
@@ -156,9 +228,9 @@ class VisionCommandLayer:
             for phrase in phrases
         )
 
-    # ---------------------------------------------------------
+    # =========================================================
     # Pure command classification
-    # ---------------------------------------------------------
+    # =========================================================
 
     def classify(self, command):
         """
@@ -180,25 +252,6 @@ class VisionCommandLayer:
 
         Returns:
             str | None
-
-        Examples:
-            "what is on my screen"
-                -> "analyze_screen"
-
-            "what application is open"
-                -> "detect_active_window"
-
-            "what text is visible"
-                -> "read_screen_text"
-
-            "open google"
-                -> "open_google"
-
-            "search google for python"
-                -> "search_web"
-
-            Unknown command
-                -> None
         """
 
         if not isinstance(command, str):
@@ -209,44 +262,109 @@ class VisionCommandLayer:
         if not normalized:
             return None
 
+        # -----------------------------------------------------
         # Screen analysis
+        # -----------------------------------------------------
+
         if normalized in self.SCREEN_COMMANDS:
             return "analyze_screen"
 
+        # -----------------------------------------------------
         # Active window
+        # -----------------------------------------------------
+
         if normalized in self.ACTIVE_WINDOW_COMMANDS:
             return "detect_active_window"
 
+        # -----------------------------------------------------
         # OCR
+        # -----------------------------------------------------
+
         if normalized in self.OCR_COMMANDS:
             return "read_screen_text"
 
+        # -----------------------------------------------------
+        # Combined Google search workflow
+        #
+        # Example:
+        #
+        # "open a new tab for Google and search latest AI"
+        #
+        # This must be checked before the shorter
+        # Google/new-tab workflow.
+        # -----------------------------------------------------
+
+        if self._starts_with_any(
+            normalized,
+            self.GOOGLE_SEARCH_WORKFLOW_PREFIXES,
+        ):
+            query = self._extract_google_workflow_query(
+                command
+            )
+
+            if query:
+                return "search_web"
+
+            return None
+
+        # -----------------------------------------------------
+        # Google + new-tab workflow
+        #
+        # Examples:
+        #
+        # "open a new tab for Google"
+        # "open new tab for Google"
+        # -----------------------------------------------------
+
+        if self._starts_with_any(
+            normalized,
+            self.GOOGLE_NEW_TAB_PREFIXES,
+        ):
+            return "google_new_tab"
+
+        # -----------------------------------------------------
         # Google
+        # -----------------------------------------------------
+
         if normalized in self.GOOGLE_COMMANDS:
             return "open_google"
 
+        # -----------------------------------------------------
         # New tab
+        # -----------------------------------------------------
+
         if normalized in self.NEW_TAB_COMMANDS:
             return "new_tab"
 
+        # -----------------------------------------------------
         # Refresh
+        # -----------------------------------------------------
+
         if normalized in self.REFRESH_COMMANDS:
             return "refresh"
 
+        # -----------------------------------------------------
         # Back
+        # -----------------------------------------------------
+
         if normalized in self.BACK_COMMANDS:
             return "back"
 
+        # -----------------------------------------------------
         # Forward
+        # -----------------------------------------------------
+
         if normalized in self.FORWARD_COMMANDS:
             return "forward"
 
+        # -----------------------------------------------------
         # Web search
+        # -----------------------------------------------------
+
         if self._starts_with_any(
             normalized,
             self.SEARCH_PREFIXES,
         ):
-            # Make sure a query actually exists.
             for prefix in self.SEARCH_PREFIXES:
                 if normalized.startswith(prefix):
                     query = normalized[
@@ -260,21 +378,25 @@ class VisionCommandLayer:
 
         return None
 
+    # =========================================================
+    # Vision command detection
+    # =========================================================
+
     def is_vision_command(self, command):
         """
-        Return True if the command belongs to V6 vision/browser control.
+        Return True if the command belongs to V6
+        vision/browser control.
 
-        IMPORTANT:
-            This method is completely side-effect free.
+        This method is completely side-effect free.
 
-        It is safe to call from main.py command detection.
+        It is safe to call from the main runtime.
         """
 
         return self.classify(command) is not None
 
-    # ---------------------------------------------------------
+    # =========================================================
     # Screen understanding
-    # ---------------------------------------------------------
+    # =========================================================
 
     def _handle_screen_analysis(self):
         """Analyze the current screen."""
@@ -357,6 +479,7 @@ class VisionCommandLayer:
         )
 
         title = window.get("title") or "Unknown"
+
         process = (
             window.get("process_name")
             or "Unknown"
@@ -388,9 +511,9 @@ class VisionCommandLayer:
             f"readable screen elements."
         )
 
-    # ---------------------------------------------------------
+    # =========================================================
     # Browser actions
-    # ---------------------------------------------------------
+    # =========================================================
 
     def _handle_new_tab(self):
         """Open a new browser tab."""
@@ -406,6 +529,57 @@ class VisionCommandLayer:
                 "Opening a new browser tab."
             ),
             "data": result,
+        }
+
+    def _handle_google_new_tab(self):
+        """
+        Open a new browser tab and then open Google.
+
+        Sequence:
+            1. Open a new browser tab.
+            2. Open Google.
+        """
+
+        new_tab_result = (
+            self.browser_control.open_new_tab()
+        )
+
+        if not new_tab_result.get(
+            "success",
+            False,
+        ):
+            return {
+                "success": False,
+                "action": "google_new_tab",
+                "response": (
+                    "I could not open a new browser tab."
+                ),
+                "data": {
+                    "step": "new_tab",
+                    "result": new_tab_result,
+                },
+            }
+
+        google_result = (
+            self.browser_control.open_url(
+                "https://www.google.com"
+            )
+        )
+
+        return {
+            "success": google_result.get(
+                "success",
+                False,
+            ),
+            "action": "google_new_tab",
+            "response": (
+                "Opening Google in a new tab."
+            ),
+            "data": {
+                "workflow": "google_new_tab",
+                "new_tab": new_tab_result,
+                "google": google_result,
+            },
         }
 
     def _handle_refresh(self):
@@ -488,14 +662,100 @@ class VisionCommandLayer:
             "data": result,
         }
 
-    # ---------------------------------------------------------
+    def _handle_google_search_workflow(
+        self,
+        query,
+    ):
+        """
+        Execute the combined Google search workflow.
+
+        Sequence:
+            1. Open a new browser tab.
+            2. Open Google in that tab.
+            3. Perform the requested search.
+
+        The final public action remains "search_web"
+        for compatibility with the existing V6 search
+        handling.
+        """
+
+        new_tab_result = (
+            self.browser_control.open_new_tab()
+        )
+
+        if not new_tab_result.get(
+            "success",
+            False,
+        ):
+            return {
+                "success": False,
+                "action": "search_web",
+                "response": (
+                    "I could not open a new browser tab."
+                ),
+                "data": {
+                    "step": "new_tab",
+                    "result": new_tab_result,
+                },
+            }
+
+        google_result = (
+            self.browser_control.open_url(
+                "https://www.google.com"
+            )
+        )
+
+        if not google_result.get(
+            "success",
+            False,
+        ):
+            return {
+                "success": False,
+                "action": "search_web",
+                "response": (
+                    "I opened the new browser tab, "
+                    "but I could not open Google."
+                ),
+                "data": {
+                    "step": "open_google",
+                    "new_tab": new_tab_result,
+                    "result": google_result,
+                },
+            }
+
+        search_result = (
+            self.browser_control.search_web(
+                query
+            )
+        )
+
+        return {
+            "success": search_result.get(
+                "success",
+                False,
+            ),
+            "action": "search_web",
+            "response": (
+                f"Opening Google in a new tab "
+                f"and searching the web for {query}."
+            ),
+            "data": {
+                "workflow": "google_new_tab_search",
+                "query": query,
+                "new_tab": new_tab_result,
+                "google": google_result,
+                "search": search_result,
+            },
+        }
+
+    # =========================================================
     # Search query extraction
-    # ---------------------------------------------------------
+    # =========================================================
 
     @staticmethod
     def _extract_search_query(command):
         """
-        Extract the search query from a search command.
+        Extract the search query from a normal search command.
 
         Returns:
             str
@@ -521,7 +781,7 @@ class VisionCommandLayer:
 
         for prefix in prefixes:
             if normalized.startswith(prefix):
-                # Preserve the user's original query casing
+                # Preserve user's original query casing
                 # where possible.
                 original = command.strip()
 
@@ -533,9 +793,47 @@ class VisionCommandLayer:
 
         return ""
 
-    # ---------------------------------------------------------
+    @classmethod
+    def _extract_google_workflow_query(
+        cls,
+        command,
+    ):
+        """
+        Extract the search query from a combined
+        Google/new-tab/search workflow.
+        """
+
+        if not isinstance(command, str):
+            return ""
+
+        original = command.strip()
+
+        normalized = (
+            " ".join(
+                original.lower().split()
+            )
+        )
+
+        prefixes = (
+            "open a new tab for google and search for ",
+            "open new tab for google and search for ",
+            "open a new tab for google and search ",
+            "open new tab for google and search ",
+        )
+
+        for prefix in prefixes:
+            if normalized.startswith(prefix):
+                query = original[
+                    len(prefix):
+                ].strip()
+
+                return query
+
+        return ""
+
+    # =========================================================
     # Command execution
-    # ---------------------------------------------------------
+    # =========================================================
 
     def execute(self, command):
         """
@@ -569,12 +867,11 @@ class VisionCommandLayer:
             return result
 
         # -----------------------------------------------------
-        # PURE CLASSIFICATION
+        # Pure classification
         # -----------------------------------------------------
 
         action = self.classify(command)
 
-        # Unknown command
         if action is None:
             result = {
                 "success": False,
@@ -590,7 +887,7 @@ class VisionCommandLayer:
             return result
 
         # -----------------------------------------------------
-        # EXECUTION
+        # Execution
         #
         # IMPORTANT:
         # Each action is executed exactly once.
@@ -609,6 +906,11 @@ class VisionCommandLayer:
         elif action == "read_screen_text":
             result = self._handle_ocr()
 
+        elif action == "google_new_tab":
+            result = (
+                self._handle_google_new_tab()
+            )
+
         elif action == "open_google":
             result = self._handle_open_google()
 
@@ -625,24 +927,39 @@ class VisionCommandLayer:
             result = self._handle_forward()
 
         elif action == "search_web":
-            query = self._extract_search_query(
-                command
+            # Combined Google/new-tab/search workflow.
+            workflow_query = (
+                self._extract_google_workflow_query(
+                    command
+                )
             )
 
-            if not query:
-                result = {
-                    "success": False,
-                    "action": "search_web",
-                    "response": (
-                        "Please specify what you "
-                        "want me to search for."
-                    ),
-                    "data": None,
-                }
-            else:
-                result = self._handle_search(
-                    query
+            if workflow_query:
+                result = (
+                    self._handle_google_search_workflow(
+                        workflow_query
+                    )
                 )
+
+            else:
+                query = self._extract_search_query(
+                    command
+                )
+
+                if not query:
+                    result = {
+                        "success": False,
+                        "action": "search_web",
+                        "response": (
+                            "Please specify what you "
+                            "want me to search for."
+                        ),
+                        "data": None,
+                    }
+                else:
+                    result = self._handle_search(
+                        query
+                    )
 
         else:
             # Defensive fallback.
@@ -660,15 +977,19 @@ class VisionCommandLayer:
 
         return result
 
-    # ---------------------------------------------------------
+    # =========================================================
     # State
-    # ---------------------------------------------------------
+    # =========================================================
 
     def get_last_result(self):
         """Return the most recent command result."""
 
         return self.last_result
 
+
+# =============================================================
+# Direct module execution
+# =============================================================
 
 if __name__ == "__main__":
     layer = VisionCommandLayer()
@@ -687,6 +1008,7 @@ if __name__ == "__main__":
     print("  - OCR")
     print("  - Browser navigation")
     print("  - Web search")
+    print("  - Google new-tab workflow")
+    print("  - Combined Google search workflow")
 
     print("==========================================")
-
