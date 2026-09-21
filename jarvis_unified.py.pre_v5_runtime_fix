@@ -110,10 +110,10 @@ def is_tool_command(command: str) -> bool:
     commands cannot be intercepted by the generic
     CommandRouter.
 
-    V4 filesystem commands are checked before generic
-    V5 web detection because both systems intentionally
-    recognize natural-language search commands such as
-    "search for ...".
+    V4 filesystem commands are checked before the
+    generic V5 web detector because both systems
+    intentionally recognize natural-language search
+    commands such as "search for ...".
 
     Explicit web commands retain V5 ownership.
     """
@@ -169,14 +169,6 @@ def is_tool_command(command: str) -> bool:
             )
 
     # ========================================================
-    # V5 WEATHER
-    # ========================================================
-
-    if web_router._is_weather_command(command):
-
-        return True
-
-    # ========================================================
     # V8 AUTOMATION
     # ========================================================
 
@@ -220,6 +212,14 @@ def is_tool_command(command: str) -> bool:
     # ========================================================
 
     if router._is_filesystem_command(command):
+
+        return True
+
+    # ========================================================
+    # V5 WEB
+    # ========================================================
+
+    if web_router.is_web_command(command):
 
         return True
 

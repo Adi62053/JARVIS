@@ -51,11 +51,7 @@ from automation.memory_workflow_runner import (
 )
 from automation.schedule_runner import ScheduleRunner
 from automation.workflow_runner import WorkflowRunner
-
-from jarvis_unified_automation import (
-    is_automation_command,
-    handle_automation_command as _handle_automation_command,
-)
+from jarvis_unified_automation import (is_automation_command, handle_automation_command as _handle_automation_command,)
 
 
 # ============================================================
@@ -88,10 +84,7 @@ web_router = WebRouter()
 # MEMORY SPEECH FORMATTING
 # ============================================================
 
-from jarvis_unified_memory import (
-    format_memory_for_speech,
-    handle_memory_result as _handle_memory_result,
-)
+from jarvis_unified_memory import (format_memory_for_speech, handle_memory_result as _handle_memory_result)
 
 
 def handle_memory_result(result):
@@ -109,13 +102,6 @@ def is_tool_command(command: str) -> bool:
     V8 is inserted before V3/V4 so that automation
     commands cannot be intercepted by the generic
     CommandRouter.
-
-    V4 filesystem commands are checked before generic
-    V5 web detection because both systems intentionally
-    recognize natural-language search commands such as
-    "search for ...".
-
-    Explicit web commands retain V5 ownership.
     """
 
     command = command.lower().strip()
@@ -169,14 +155,6 @@ def is_tool_command(command: str) -> bool:
             )
 
     # ========================================================
-    # V5 WEATHER
-    # ========================================================
-
-    if web_router._is_weather_command(command):
-
-        return True
-
-    # ========================================================
     # V8 AUTOMATION
     # ========================================================
 
@@ -185,25 +163,10 @@ def is_tool_command(command: str) -> bool:
         return True
 
     # ========================================================
-    # V5 EXPLICIT WEB COMMANDS
+    # V5 WEB
     # ========================================================
 
-    explicit_web_prefixes = [
-
-        "search the web for ",
-        "search the internet for ",
-        "search online for ",
-        "find online ",
-        "find on the internet ",
-        "google ",
-        "web search ",
-        "internet search ",
-    ]
-
-    if any(
-        command.startswith(prefix)
-        for prefix in explicit_web_prefixes
-    ):
+    if web_router.is_web_command(command):
 
         return True
 
@@ -274,7 +237,6 @@ def is_tool_command(command: str) -> bool:
     ]
 
     if command in volume_commands:
-
         return True
 
     # ========================================================
@@ -330,7 +292,6 @@ def is_tool_command(command: str) -> bool:
                 "make it louder",
                 "make it quieter",
             ]:
-
                 continue
 
             remaining = command[
@@ -351,7 +312,6 @@ def is_tool_command(command: str) -> bool:
                     )
 
                     if 0 <= value <= 100:
-
                         return True
 
     # ========================================================
@@ -369,7 +329,6 @@ def is_tool_command(command: str) -> bool:
     ]
 
     if command in lock_commands:
-
         return True
 
     # ========================================================
@@ -413,7 +372,6 @@ def is_tool_command(command: str) -> bool:
     ]
 
     if command in window_commands:
-
         return True
 
     # ========================================================
@@ -429,7 +387,6 @@ def is_tool_command(command: str) -> bool:
             value = int(percentage)
 
             if 0 <= value <= 100:
-
                 return True
 
     return False
@@ -590,11 +547,9 @@ def handle_pending_memory_confirmation(
 ) -> bool:
 
     if memory_controller is None:
-
         return False
 
     if not memory_controller.has_pending_confirmation():
-
         return False
 
     if is_confirmation(command):
@@ -633,7 +588,6 @@ def handle_pending_memory_confirmation(
 def handle_tool_result(result):
 
     if not result:
-
         return
 
     if isinstance(result, str):
@@ -674,7 +628,6 @@ def handle_tool_result(result):
 def handle_vision_result(result):
 
     if not result:
-
         return
 
     response = result.get(
@@ -788,26 +741,15 @@ def main():
     print("Personal Automation: ACTIVE")
     print()
     print("Say 'Hey Jarvis' to activate.")
-    print(
-        "Say 'goodbye' or 'talk to you later' "
-        "to end a conversation."
-    )
+    print("Say 'goodbye' or 'talk to you later' to end a conversation.")
     print("Say 'exit' to shut down JARVIS.")
     print("Press Ctrl+C to stop.")
     print()
 
     try:
-
-        memory_count = (
-            memory_controller.get_memory_count()
-        )
-
-        print(
-            f"Stored memories: {memory_count}"
-        )
-
+        memory_count = memory_controller.get_memory_count()
+        print(f"Stored memories: {memory_count}")
     except Exception as exc:
-
         print(
             "JARVIS V7 memory startup error:",
             type(exc).__name__,
@@ -815,17 +757,9 @@ def main():
         )
 
     try:
-
-        automation_count = len(
-            automation_manager.list_all()
-        )
-
-        print(
-            f"Automations loaded: {automation_count}"
-        )
-
+        automation_count = len(automation_manager.list_all())
+        print(f"Automations loaded: {automation_count}")
     except Exception as exc:
-
         print(
             "JARVIS V8 automation startup error:",
             type(exc).__name__,
@@ -852,17 +786,13 @@ def main():
         CommandSecurity=CommandSecurity,
         sr=sr,
         is_tool_command=is_tool_command,
-        handle_pending_memory_confirmation=(
-            handle_pending_memory_confirmation
-        ),
+        handle_pending_memory_confirmation=handle_pending_memory_confirmation,
         handle_memory_result=handle_memory_result,
         handle_vision_result=handle_vision_result,
         handle_tool_result=handle_tool_result,
         confirm_risky_command=confirm_risky_command,
         is_automation_command=is_automation_command,
-        handle_automation_command=(
-            _handle_automation_command
-        ),
+        handle_automation_command=_handle_automation_command,
     )
 
 

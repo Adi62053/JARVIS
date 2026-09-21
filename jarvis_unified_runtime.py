@@ -218,9 +218,23 @@ def run_unified_runtime(
                             ):
                                 continue
 
-                        if web_router.is_web_command(
-                            command
-                        ):
+                        explicit_web_prefixes = [
+                            "search the web for ",
+                            "search the internet for ",
+                            "search online for ",
+                            "find online ",
+                            "find on the internet ",
+                            "google ",
+                            "web search ",
+                            "internet search ",
+                        ]
+
+                        is_explicit_web = any(
+                            command.startswith(prefix)
+                            for prefix in explicit_web_prefixes
+                        ) or web_router._is_weather_command(command)
+
+                        if is_explicit_web:
 
                             result = (
                                 web_router.execute(

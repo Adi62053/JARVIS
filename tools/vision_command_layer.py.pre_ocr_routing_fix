@@ -80,7 +80,6 @@ class VisionCommandLayer:
         "read visible text",
         "read visible text on screen",
         "read the text on screen",
-        "read the text on my screen",
         "show visible text",
     )
 

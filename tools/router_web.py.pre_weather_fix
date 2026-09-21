@@ -1,7 +1,6 @@
 import re
 
 from tools.web_intelligence import WebIntelligence
-from tools.weather_service import WeatherService
 
 try:
     from ollama import chat
@@ -33,7 +32,6 @@ class WebRouter:
 
     def __init__(self):
         self.web = WebIntelligence(max_results=5)
-        self.weather = WeatherService()
         self.last_results = []
 
         # Same local model already used by JARVIS.
@@ -141,119 +139,6 @@ class WebRouter:
                 return True
 
         return False
-
-    # ==========================================================
-    # WEATHER DETECTION
-    # ==========================================================
-
-    def _is_weather_command(self, command):
-        """
-        Detect natural current-weather requests.
-        """
-
-        command = command.lower().strip()
-
-        weather_prefixes = (
-            "weather in ",
-            "weather at ",
-            "weather of ",
-            "temperature in ",
-            "temperature at ",
-            "temperature of ",
-            "forecast in ",
-            "forecast at ",
-            "forecast of ",
-            "what is the weather in ",
-            "what's the weather in ",
-            "what is the weather at ",
-            "what's the weather at ",
-            "what is the weather of ",
-            "what's the weather of ",
-            "what is the temperature in ",
-            "what's the temperature in ",
-            "what is the temperature at ",
-            "what's the temperature at ",
-            "what is the temperature of ",
-            "what's the temperature of ",
-        )
-
-        if any(command.startswith(prefix) for prefix in weather_prefixes):
-            return True
-
-        return command in (
-            "weather today",
-            "weather now",
-            "current weather",
-            "temperature today",
-            "temperature now",
-            "current temperature",
-        )
-
-    def _extract_weather_city(self, command):
-        """
-        Extract a city from a weather command.
-        """
-
-        command = command.lower().strip()
-
-        prefixes = (
-            "weather in ",
-            "weather at ",
-            "weather of ",
-            "temperature in ",
-            "temperature at ",
-            "temperature of ",
-            "forecast in ",
-            "forecast at ",
-            "forecast of ",
-            "what is the weather in ",
-            "what's the weather in ",
-            "what is the weather at ",
-            "what's the weather at ",
-            "what is the weather of ",
-            "what's the weather of ",
-            "what is the temperature in ",
-            "what's the temperature in ",
-            "what is the temperature at ",
-            "what's the temperature at ",
-            "what is the temperature of ",
-            "what's the temperature of ",
-        )
-
-        for prefix in prefixes:
-            if command.startswith(prefix):
-                city = command[len(prefix):].strip()
-                if city:
-                    return city
-
-        return None
-
-    def answer_weather(self, city):
-        """
-        Return a live current-weather answer.
-        """
-
-        if not city:
-            return (
-                "Sir, please specify a city. For example, "
-                "weather in Hyderabad."
-            )
-
-        print()
-        print("=" * 70)
-        print("V5 WEATHER")
-        print("=" * 70)
-        print(f"Location: {city}")
-        print("Querying Open-Meteo...")
-        print()
-
-        answer = self.weather.answer(city)
-
-        print(answer)
-        print("=" * 70)
-        print()
-
-        return answer
 
     # ==========================================================
     # EXPLICIT SEARCH DETECTION
@@ -971,16 +856,7 @@ ANSWER STYLE:
             return None
 
         # ======================================================
-        # 1. WEATHER
-        # ======================================================
-
-        if self._is_weather_command(command):
-
-            city = self._extract_weather_city(command)
-            return self.answer_weather(city)
-
-        # ======================================================
-        # 2. EXPLICIT SEARCH
+        # 1. EXPLICIT SEARCH
         # ======================================================
 
         if self._is_explicit_search_command(command):
@@ -991,7 +867,7 @@ ANSWER STYLE:
                 return self.search(query)
 
         # ======================================================
-        # 3. NATURAL CURRENT/LATEST QUESTION
+        # 2. NATURAL CURRENT/LATEST QUESTION
         # ======================================================
 
         if self._is_current_question(command):
@@ -1002,7 +878,7 @@ ANSWER STYLE:
                 return self.answer_current_question(query)
 
         # ======================================================
-        # 4. RESULT NUMBER
+        # 3. RESULT NUMBER
         # ======================================================
 
         result_number = self._extract_result_number(command)
@@ -1011,7 +887,7 @@ ANSWER STYLE:
             return self.read_result(result_number)
 
         # ======================================================
-        # 5. DIRECT WEBPAGE
+        # 4. DIRECT WEBPAGE
         # ======================================================
 
         page_target = self._extract_page_target(command)
@@ -1020,7 +896,7 @@ ANSWER STYLE:
             return self.read_page(page_target)
 
         # ======================================================
-        # 6. DIRECT URL
+        # 5. DIRECT URL
         # ======================================================
 
         if (

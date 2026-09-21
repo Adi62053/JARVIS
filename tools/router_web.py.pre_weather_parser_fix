@@ -156,25 +156,18 @@ class WebRouter:
         weather_prefixes = (
             "weather in ",
             "weather at ",
-            "weather of ",
             "temperature in ",
             "temperature at ",
-            "temperature of ",
             "forecast in ",
             "forecast at ",
-            "forecast of ",
             "what is the weather in ",
             "what's the weather in ",
             "what is the weather at ",
             "what's the weather at ",
-            "what is the weather of ",
-            "what's the weather of ",
             "what is the temperature in ",
             "what's the temperature in ",
             "what is the temperature at ",
             "what's the temperature at ",
-            "what is the temperature of ",
-            "what's the temperature of ",
         )
 
         if any(command.startswith(prefix) for prefix in weather_prefixes):
@@ -199,25 +192,18 @@ class WebRouter:
         prefixes = (
             "weather in ",
             "weather at ",
-            "weather of ",
             "temperature in ",
             "temperature at ",
-            "temperature of ",
             "forecast in ",
             "forecast at ",
-            "forecast of ",
             "what is the weather in ",
             "what's the weather in ",
             "what is the weather at ",
             "what's the weather at ",
-            "what is the weather of ",
-            "what's the weather of ",
             "what is the temperature in ",
             "what's the temperature in ",
             "what is the temperature at ",
             "what's the temperature at ",
-            "what is the temperature of ",
-            "what's the temperature of ",
         )
 
         for prefix in prefixes:
