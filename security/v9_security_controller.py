@@ -1,8 +1,8 @@
-﻿"""
+"""
 JARVIS V9 - Security Controller
 
 Coordinates the V9 permission, privilege, policy, authorization,
-and audit components.
+audit, and emergency security components.
 
 This module does not execute system operations or request elevation.
 It only evaluates and records security decisions.
@@ -10,6 +10,9 @@ It only evaluates and records security decisions.
 
 from __future__ import annotations
 
+from security.v9_21_1_emergency_controls import (
+    V9EmergencySecurityControls,
+)
 from security.v9_audit_logger import V9AuditLogger
 from security.v9_authorization_manager import V9AuthorizationManager
 from security.v9_permission_manager import V9PermissionManager
@@ -34,6 +37,7 @@ class V9SecurityController:
         policy_engine: V9PolicyEngine | None = None,
         authorization_manager: V9AuthorizationManager | None = None,
         audit_logger: V9AuditLogger | None = None,
+        emergency_controls: V9EmergencySecurityControls | None = None,
     ) -> None:
         self.permission_manager = (
             permission_manager or V9PermissionManager()
@@ -46,6 +50,9 @@ class V9SecurityController:
             authorization_manager or V9AuthorizationManager()
         )
         self.audit_logger = audit_logger or V9AuditLogger()
+        self.emergency_controls = (
+            emergency_controls or V9EmergencySecurityControls()
+        )
 
     def evaluate(
         self,
@@ -87,6 +94,26 @@ class V9SecurityController:
         current_privilege = (
             self.privilege_manager.get_current_privilege()
         )
+
+        # Emergency stop is the highest-level runtime safety boundary.
+        if self.emergency_controls.is_active():
+            decision = SecurityDecision.DENY
+            authorization_state = AuthorizationState.DENIED
+            result = "EMERGENCY_STOP_ACTIVE"
+
+            self.audit_logger.record(
+                operation_id=operation_id,
+                capability=capability,
+                resource=resource,
+                risk_level=risk_level.value,
+                required_privilege=required_privilege.value,
+                current_privilege=current_privilege.value,
+                authorization_state=authorization_state.value,
+                decision=decision.value,
+                result=result,
+            )
+
+            return decision
 
         if not self.permission_manager.is_allowed(capability):
             decision = SecurityDecision.DENY
