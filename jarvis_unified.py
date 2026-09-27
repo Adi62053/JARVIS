@@ -51,6 +51,9 @@ from automation.memory_workflow_runner import (
 )
 from automation.schedule_runner import ScheduleRunner
 from automation.workflow_runner import WorkflowRunner
+from automation.v9_automation_security import V9AutomationSecurity
+
+from security.v9_security_controller import V9SecurityController
 
 from jarvis_unified_automation import (
     is_automation_command,
@@ -75,6 +78,7 @@ automation_manager = None
 automation_handler = None
 automation_workflow_runner = None
 automation_scheduler = None
+v9_security_controller = None
 
 
 # ============================================================
@@ -710,6 +714,7 @@ def initialize_v8():
     global automation_handler
     global automation_workflow_runner
     global automation_scheduler
+    global v9_security_controller
 
     automation_manager = AutomationManager()
 
@@ -717,7 +722,15 @@ def initialize_v8():
         manager=automation_manager
     )
 
-    executor = AutomationExecutor()
+    v9_security_controller = V9SecurityController()
+
+    v9_automation_security = V9AutomationSecurity(
+        controller=v9_security_controller
+    )
+
+    executor = AutomationExecutor(
+        v9_security=v9_automation_security
+    )
 
     workflow_runner = WorkflowRunner(
         executor=executor

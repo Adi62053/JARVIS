@@ -21,6 +21,7 @@ from automation.automation_failure_result import AutomationFailureResult
 from automation.automation_model import Automation
 from automation.automation_security_gate import AutomationSecurityGate
 from automation.failure_policy import FailurePolicy
+from automation.v9_automation_security import V9AutomationSecurity
 
 
 class AutomationExecutor:
@@ -33,6 +34,7 @@ class AutomationExecutor:
         confirmation: AutomationConfirmation | None = None,
         failure_policy: str = FailurePolicy.STOP,
         security_gate: AutomationSecurityGate | None = None,
+        v9_security: V9AutomationSecurity | None = None,
     ) -> None:
         self.dry_run = dry_run
         self.dispatcher = dispatcher or AutomationDispatcher()
@@ -47,6 +49,15 @@ class AutomationExecutor:
             self.security_gate = AutomationSecurityGate(
                 confirmation=self.confirmation
             )
+
+        if v9_security is not None and not isinstance(
+            v9_security, V9AutomationSecurity
+        ):
+            raise TypeError(
+                "v9_security must be a V9AutomationSecurity"
+            )
+
+        self.v9_security = v9_security
 
         self.failure_policy = FailurePolicy.normalize(
             failure_policy
@@ -113,6 +124,49 @@ class AutomationExecutor:
                 f" | SECURITY={step.security_level}"
                 f"{security_note}"
             )
+
+            if self.v9_security is not None:
+                try:
+                    v9_decision = self.v9_security.evaluate(
+                        automation_name=automation.name,
+                        step_number=index,
+                        step=step,
+                    )
+                except ValueError:
+                    # V9 only evaluates actions with an explicit V9
+                    # security mapping. Existing V8 behavior remains
+                    # unchanged for non-integrated actions.
+                    v9_decision = None
+
+                if v9_decision is not None and v9_decision.value != "ALLOW":
+                    failure = AutomationFailureHandler.capture(
+                        automation_name=automation.name,
+                        action=step.action,
+                        error=RuntimeError(
+                            f"V9 security blocked operation: "
+                            f"{v9_decision.value}"
+                        ),
+                        step_number=index,
+                        parameters=step.parameters,
+                    )
+
+                    failure_result.add_failure(failure)
+                    failure_result.apply_policy(
+                        self.failure_policy
+                    )
+
+                    blocked_message = (
+                        f"SECURITY BLOCKED - Step {index}: "
+                        f"{step.action} -> V9={v9_decision.value}"
+                    )
+
+                    if failure_result.stopped:
+                        raise RuntimeError(
+                            blocked_message
+                        )
+
+                    results.append(blocked_message)
+                    continue
 
             if self.dry_run:
                 results.append(f"DRY RUN - {message}")
